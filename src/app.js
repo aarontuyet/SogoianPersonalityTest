@@ -17,7 +17,8 @@
 const state = {
   currentIndex: 0,
   selectedVectors: [],   // array of chosen answer vectors, one per question
-  isTransitioning: false // guard against rapid input during screen transitions
+  isTransitioning: false, // guard against rapid input during screen transitions
+  answerLocked: false     // hard lock: prevents any second answer on the same question
 };
 
 // ── DOM REFERENCES ────────────────────────────────────────────────────────────
@@ -40,10 +41,11 @@ const el = {
   questionText:    document.getElementById('question-text'),
   optionsContainer: document.getElementById('options-container'),
 
-  resultCard:        document.getElementById('result-card'),
+  resultCard:          document.getElementById('result-card'),
+  resultHeroWrap:      document.querySelector('.result__hero-wrap'),
   resultArchetypeName: document.getElementById('result-archetype-name'),
-  resultImage:       document.getElementById('result-image'),
-  resultAnalysis:    document.getElementById('result-analysis')
+  resultImage:         document.getElementById('result-image'),
+  resultAnalysis:      document.getElementById('result-analysis')
 };
 
 // ── SCREEN TRANSITIONS ────────────────────────────────────────────────────────
@@ -117,6 +119,9 @@ function renderQuestion(index) {
   requestAnimationFrame(() => {
     el.questionText.textContent = question.text;
 
+    // Reset answer lock for this question
+    state.answerLocked = false;
+
     // Build option buttons
     el.optionsContainer.innerHTML = '';
     for (const option of question.options) {
@@ -156,10 +161,17 @@ function renderQuestion(index) {
 
 /**
  * Handles an answer selection: records the vector, advances the quiz.
+ * Uses state.answerLocked as a hard guard against duplicate recording
+ * from rapid taps, touch event duplication on iOS, or keyboard repeat.
  * @param {HTMLButtonElement} selectedBtn
  * @param {number[]} vector
  */
 function handleOptionSelect(selectedBtn, vector) {
+  // Hard lock — bail immediately if an answer has already been recorded
+  // for this question. CSS .disabled alone is insufficient on iOS.
+  if (state.answerLocked) return;
+  state.answerLocked = true;
+
   // Visual feedback — mark selected, disable all options
   const allOptions = el.optionsContainer.querySelectorAll('.option-btn');
   allOptions.forEach(btn => {
@@ -208,11 +220,32 @@ function populateResult(archetype) {
   el.resultArchetypeName.textContent = archetype.name.toUpperCase();
   el.resultAnalysis.textContent = archetype.analysis;
 
-  el.resultImage.src = archetype.image;
+  // Image with graceful fallback — missing art must never break the result screen
+  el.resultImage.style.display = '';
   el.resultImage.alt = `${archetype.name} — archetype illustration`;
 
-  // Scroll result container to top
-  screens.result.scrollTo({ top: 0, behavior: 'instant' });
+  // Remove any previously injected placeholder
+  const existingPlaceholder = document.getElementById('result-image-placeholder');
+  if (existingPlaceholder) existingPlaceholder.remove();
+
+  el.resultImage.onerror = function () {
+    // Hide the broken image element
+    this.style.display = 'none';
+    this.onerror = null; // prevent infinite error loop
+
+    // Inject a text placeholder inside the hero wrap
+    const placeholder = document.createElement('div');
+    placeholder.id = 'result-image-placeholder';
+    placeholder.className = 'result__image-placeholder';
+    placeholder.setAttribute('aria-label', 'Illustration in production');
+    placeholder.textContent = '[ ILLUSTRATION IN PRODUCTION ]';
+    el.resultHeroWrap.appendChild(placeholder);
+  };
+
+  el.resultImage.src = archetype.image;
+
+  // Scroll result screen to top so hero image is the first thing seen
+  screens.result.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -275,12 +308,19 @@ function restartAssessment() {
   el.resultAnalysis.textContent = '';
   el.resultImage.src = '';
   el.resultImage.alt = '';
+  el.resultImage.style.display = '';
+  el.resultImage.onerror = null;
   el.btnDownload.textContent = 'DOWNLOAD RESULT';
   el.btnDownload.disabled = false;
+
+  // Remove image placeholder if present
+  const placeholder = document.getElementById('result-image-placeholder');
+  if (placeholder) placeholder.remove();
 
   // Reset quiz state
   state.currentIndex = 0;
   state.selectedVectors = [];
+  state.answerLocked = false;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = 'QUERY 01 / 25';
   el.progressTrack.setAttribute('aria-valuenow', 0);
@@ -289,7 +329,6 @@ function restartAssessment() {
 
   transitionTo(screens.result, screens.landing);
 }
-
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
 el.btnStart.addEventListener('click', startQuiz);
