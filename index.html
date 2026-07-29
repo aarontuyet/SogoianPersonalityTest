@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A psychological assessment. Twenty-five questions. One unavoidable truth." />
+  <meta name="theme-color" content="#0d0d0d" />
+
+  <title>The Sogoian Personality Assessment</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="assets/images/icons/icon-192.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 1: LANDING
+  ═══════════════════════════════════════════ -->
+  <section id="screen-landing" class="screen screen--active" aria-label="Landing screen">
+    <div class="scan-lines" aria-hidden="true"></div>
+
+    <div class="landing__container">
+      <div class="landing__header">
+        <p class="landing__label">PSYCHOLOGICAL ASSESSMENT UNIT v2.4</p>
+        <h1 class="landing__title">THE SOGOIAN<br/>MATRIX</h1>
+        <div class="landing__cursor" aria-hidden="true">█</div>
+      </div>
+
+      <div class="landing__body">
+        <p class="landing__tagline">Twenty-five questions.<br/>Six dimensions.<br/>One unavoidable conclusion.</p>
+        <p class="landing__sub">This system does not flatter. It classifies.</p>
+      </div>
+
+      <div class="landing__footer">
+        <button id="btn-start" class="btn btn--primary" aria-label="Begin the assessment">
+          INITIATE ASSESSMENT
+        </button>
+        <p class="landing__disclaimer">No data is stored. No servers are consulted.<br/>The verdict is generated entirely inside your device.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 2: QUIZ
+  ═══════════════════════════════════════════ -->
+  <section id="screen-quiz" class="screen" aria-label="Quiz screen" aria-live="polite">
+    <div class="scan-lines" aria-hidden="true"></div>
+
+    <header class="quiz__header">
+      <div class="quiz__progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="25" aria-valuenow="0" aria-label="Assessment progress">
+        <div id="progress-bar" class="quiz__progress-fill"></div>
+      </div>
+      <p id="progress-label" class="quiz__progress-label">QUERY 01 / 25</p>
+    </header>
+
+    <main class="quiz__body">
+      <p class="quiz__prompt-label">BEHAVIORAL PROBE</p>
+      <h2 id="question-text" class="quiz__question"></h2>
+
+      <div id="options-container" class="quiz__options" role="group" aria-label="Answer options">
+        <!-- Options rendered by app.js -->
+      </div>
+    </main>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 3: RESULT
+  ═══════════════════════════════════════════ -->
+  <section id="screen-result" class="screen" aria-label="Result screen">
+    <div class="scan-lines" aria-hidden="true"></div>
+
+    <div class="result__container">
+      <!-- Capturable card for html2canvas -->
+      <div id="result-card" class="result__card">
+        <div class="result__card-header">
+          <p class="result__card-label">CLASSIFICATION RESULT</p>
+          <h2 id="result-archetype-name" class="result__archetype-name"></h2>
+        </div>
+        <div class="result__card-image-wrap">
+          <img id="result-image" class="result__image" src="" alt="" />
+        </div>
+        <div class="result__card-analysis">
+          <p id="result-analysis" class="result__analysis"></p>
+        </div>
+        <div class="result__card-footer" aria-hidden="true">
+          <span class="result__watermark">THE SOGOIAN MATRIX</span>
+        </div>
+      </div>
+
+      <!-- Controls outside the capture zone -->
+      <div class="result__controls">
+        <button id="btn-download" class="btn btn--primary" aria-label="Download your result as an image">
+          DOWNLOAD RESULT
+        </button>
+        <button id="btn-restart" class="btn btn--ghost" aria-label="Restart the assessment">
+          RUN ASSESSMENT AGAIN
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════ -->
+  <script src="src/questions.js"></script>
+  <script src="src/engine.js"></script>
+  <script src="src/app.js"></script>
+
+  <!-- html2canvas loaded after app scripts; app.js checks for its presence -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+          defer></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {
+          // SW registration failed silently — app still functions
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
