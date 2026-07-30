@@ -7,727 +7,709 @@
  * Axes:
  *   Projection  — Inward (-2) to Outward (+2)
  *   Sight       — Concrete (-2) to Abstract (+2)
- *   Order       — Structured (-2) to Chaotic (+2)
+ *   Order       — Structure (-2) to Chaos (+2)
  *   Resonance   — Detached (-2) to Empathetic (+2)
- *   Alignment   — Selfless (-2) to Self-Directed (+2)
+ *   Alignment   — Selfless (-2) to Selfish (+2)
  *   Action      — Flow (-2) to Imposing (+2)
- *
- * ALIGNMENT SIGN CONVENTION (critical):
- *   -2 = Selfless (acting for others' benefit)
- *   +2 = Self-Directed (acting for personal benefit, autonomy, or appetite)
- *   Protecting others is SELFLESS → negative Alignment values.
- *   Using situations for personal gain is SELF-DIRECTED → positive values.
  */
 
 const QUESTIONS = [
-  // ── Q01 — Tests: Order, Action, Resonance, Alignment ─────────────────
+  // ── Q01 ──────────────────────────────────────────────────────────────
   {
     id: 1,
-    text: "When a complex system you rely on begins to break down, what is your immediate response?",
+    text: "How do you usually take your coffee?",
     options: [
       {
         label: "A",
-        text: "I step in and force the system back into compliance so my goals are not delayed.",
-        vector: [1, -1, -2, -1, 1, 2]
+        text: "Black, strong, and exactly the same every day. I am here to become operational.",
+        vector: [-1, -2, -2, -1, 0, 1]
       },
       {
         label: "B",
-        text: "I quietly reinforce the foundation, sacrificing my time so others do not suffer the fallout.",
-        vector: [0, -2, -1, 1, -2, -1]
+        text: "Sweet, elaborate, and slightly embarrassing to order.",
+        vector: [1, 1, 1, 1, 1, -1]
       },
       {
         label: "C",
-        text: "I watch it collapse to study the underlying mechanics of why it failed.",
-        vector: [-1, 2, 0, -2, 1, -1]
+        text: "Whatever is available. Caffeine has no need for ceremony.",
+        vector: [0, -2, 2, -1, 0, -2]
       },
       {
         label: "D",
-        text: "I abandon it entirely and improvise a completely new path forward.",
-        vector: [1, 1, 2, 0, 1, -2]
+        text: "I make enough for everyone, then forget mine until it is cold.",
+        vector: [1, -1, -1, 2, -2, -1]
       }
     ]
   },
 
-  // ── Q02 — Tests: Resonance, Alignment, Action ─────────────────────────
+  // ── Q02 ──────────────────────────────────────────────────────────────
   {
     id: 2,
-    text: "Someone asks you to keep a secret that actively hurts another person. What do you do?",
+    text: "Your alarm goes off. What happens next?",
     options: [
       {
         label: "A",
-        text: "I expose the secret immediately because protecting the vulnerable outweighs any loyalty.",
-        // Selfless (-2 Alignment): exposing to protect someone else is not self-directed
-        vector: [1, 0, 1, 2, -2, 2]
-      },
-      {
-        label: "B",
-        text: "I absorb the burden, keeping the peace while trying to comfort the hurt party privately.",
-        vector: [-1, -1, -1, 2, -1, -1]
-      },
-      {
-        label: "C",
-        text: "I use the information to gain leverage over the person who told me.",
-        vector: [0, 0, -1, -2, 2, 1]
-      },
-      {
-        label: "D",
-        text: "I ignore it entirely because their drama is not my responsibility.",
-        vector: [-1, 0, 0, -2, 1, -2]
-      }
-    ]
-  },
-
-  // ── Q03 — Tests: Order, Projection, Sight, Action ────────────────────
-  {
-    id: 3,
-    text: "You are handed a project with no instructions, no deadline, and no defined outcome. How do you proceed?",
-    options: [
-      {
-        label: "A",
-        text: "I establish a rigid framework immediately. The absence of structure is a problem I correct first.",
-        vector: [0, -1, -2, -1, 0, 2]
-      },
-      {
-        label: "B",
-        text: "I get excited. The blank canvas is the entire point. I begin generating ideas without filtering them.",
-        vector: [0, 2, 2, 0, 0, -1]
-      },
-      {
-        label: "C",
-        text: "I find the person who should have given the instructions and make their oversight visible to others.",
-        vector: [2, -1, -1, -1, 1, 2]
-      },
-      {
-        label: "D",
-        text: "I sit with the ambiguity until a single, correct direction reveals itself to me.",
-        vector: [-2, 2, 1, 0, 0, -2]
-      }
-    ]
-  },
-
-  // ── Q04 — Tests: Projection, Resonance, Action, Alignment ────────────
-  {
-    id: 4,
-    text: "A person you respect makes a decision you believe is fundamentally wrong. What is your move?",
-    options: [
-      {
-        label: "A",
-        text: "I confront them directly and articulate exactly why they are mistaken.",
-        vector: [2, 0, -1, -1, 0, 2]
-      },
-      {
-        label: "B",
-        text: "I say nothing. Respect is not a transaction. Their authority was earned.",
-        vector: [-1, -1, -2, 1, -1, -2]
-      },
-      {
-        label: "C",
-        text: "I plant seeds of doubt in the people around them and let the consensus do the work.",
-        vector: [1, 1, 0, -1, 1, 1]
-      },
-      {
-        label: "D",
-        text: "I document my objection privately and proceed in my own direction regardless.",
-        vector: [-1, 1, 1, -1, 1, -1]
-      }
-    ]
-  },
-
-  // ── Q05 — Tests: Projection, Alignment, Resonance, Action ────────────
-  {
-    id: 5,
-    text: "You have achieved something significant. No one noticed. What is your internal response?",
-    options: [
-      {
-        label: "A",
-        text: "Indifference. The achievement itself was the point. Recognition is irrelevant.",
-        vector: [-2, 1, 0, -1, 0, -2]
-      },
-      {
-        label: "B",
-        text: "Quiet resentment. I will remember who was not watching.",
-        vector: [0, 0, -1, -1, 1, 0]
-      },
-      {
-        label: "C",
-        text: "I announce it. If they will not notice, I will make them notice.",
-        vector: [2, -1, -1, -1, 1, 2]
-      },
-      {
-        label: "D",
-        text: "A deep, private sadness. I wanted to be seen, even if I will never admit it.",
-        vector: [-1, 1, 1, 2, 0, -1]
-      }
-    ]
-  },
-
-  // ── Q06 — Tests: Order, Alignment, Projection, Action ────────────────
-  {
-    id: 6,
-    text: "You discover that a rule everyone follows exists for no valid reason. What do you do?",
-    options: [
-      {
-        label: "A",
-        text: "I stop following it immediately and tell anyone who will listen it is pointless.",
-        vector: [2, 0, 2, 0, 1, 1]
-      },
-      {
-        label: "B",
-        text: "I continue following it. Social cohesion depends on people not making individual exceptions.",
-        vector: [-1, -2, -2, 1, -1, -1]
-      },
-      {
-        label: "C",
-        text: "I exploit the gap between the rule and its actual purpose for my own advantage.",
-        vector: [0, 2, 1, -2, 2, 1]
-      },
-      {
-        label: "D",
-        text: "I file the observation and return to it when it becomes strategically useful.",
-        vector: [-1, 1, -1, -1, 1, 0]
-      }
-    ]
-  },
-
-  // ── Q07 — Tests: Resonance, Projection, Alignment (replaces old stranger/distress Q)
-  // Redesigned to isolate Resonance without bundling selflessness with self-direction
-  {
-    id: 7,
-    text: "You find out a friend is making a serious mistake they have not asked for your opinion on. You:",
-    options: [
-      {
-        label: "A",
-        text: "Tell them anyway. Withholding what I know to spare their feelings is its own kind of dishonesty.",
-        // Outward, direct, slight detachment, self-directed in perspective
-        vector: [2, 0, -1, -1, 1, 2]
-      },
-      {
-        label: "B",
-        text: "Stay quiet and be available if they come to me. It is their life, not a project I manage.",
-        // Inward, empathetic respect, selfless restraint, flow
-        vector: [-1, 0, 0, 1, -1, -2]
-      },
-      {
-        label: "C",
-        text: "Tell them, but frame it as a question so the realization feels like their own.",
-        // Neutral projection, abstract framing, structured approach, empathetic method
-        vector: [0, 2, -1, 1, 0, 0]
-      },
-      {
-        label: "D",
-        text: "Say nothing. The mistake is the information. Let them collect it themselves.",
-        // Inward, detached, flow, self-directed in a cold way
-        vector: [-2, 1, 0, -2, 1, -2]
-      }
-    ]
-  },
-
-  // ── Q08 — Tests: Projection, Sight, Order, Action ────────────────────
-  {
-    id: 8,
-    text: "Given complete freedom of an afternoon with no obligations, you will most likely be found:",
-    options: [
-      {
-        label: "A",
-        text: "Alone, absorbed in a project no one else would understand or care about.",
-        vector: [-2, 2, 1, -1, 1, -1]
-      },
-      {
-        label: "B",
-        text: "Orchestrating something social. The energy of a group is a resource I prefer not to waste.",
-        vector: [2, -1, -1, 1, 1, 2]
-      },
-      {
-        label: "C",
-        text: "Wandering without destination. Structured leisure is a contradiction in terms.",
-        vector: [-1, 2, 2, 0, 0, -2]
-      },
-      {
-        label: "D",
-        text: "Catching up on obligations I previously avoided. Free time is a debt I repay to my future self.",
-        vector: [0, -1, -2, 0, -1, 1]
-      }
-    ]
-  },
-
-  // ── Q09 — Tests: Resonance, Alignment, Action ────────────────────────
-  // Redesigned: was "helping a failing person" (overlapped Q7). Now tests Resonance vs Alignment
-  // when someone's pain is your inconvenience — a cleaner distinction.
-  {
-    id: 9,
-    text: "Someone you care about is in genuine distress at an inconvenient moment for you. You:",
-    options: [
-      {
-        label: "A",
-        text: "Drop what I am doing. Their need is real and the inconvenience is mine to absorb.",
-        vector: [0, -1, -1, 2, -2, -1]
-      },
-      {
-        label: "B",
-        text: "Attend to them, but I will be honest that I am managing multiple things. I am not a martyr.",
-        vector: [1, 0, 0, 1, 0, 1]
-      },
-      {
-        label: "C",
-        text: "Set a time to talk that actually works. Emotional urgency is not always the same as urgency.",
-        vector: [0, 1, -1, -1, 1, 1]
-      },
-      {
-        label: "D",
-        text: "Note it, finish what I was doing, then reach out. A distracted response helps no one.",
-        vector: [-1, 1, -2, -1, 1, 0]
-      }
-    ]
-  },
-
-  // ── Q10 — Tests: Projection, Order, Resonance, Action ────────────────
-  {
-    id: 10,
-    text: "You are tasked with leading a group through a crisis. What is your first action?",
-    options: [
-      {
-        label: "A",
-        text: "I assess the variables and issue a plan before anyone has time to panic and complicate the process.",
-        vector: [1, -1, -2, -1, 0, 2]
-      },
-      {
-        label: "B",
-        text: "I read the room. Morale is a resource and I need to know how much I have to work with.",
-        vector: [1, 1, 0, 2, 0, 0]
-      },
-      {
-        label: "C",
-        text: "I identify the person causing the most friction and remove their ability to interfere.",
-        vector: [2, 0, -1, -2, 1, 2]
-      },
-      {
-        label: "D",
-        text: "I guide them toward discovering the solution themselves. Imposed leadership rarely holds.",
-        vector: [-1, 2, 1, 2, -1, -1]
-      }
-    ]
-  },
-
-  // ── Q11 — Tests: Projection, Resonance, Order, Action ────────────────
-  {
-    id: 11,
-    text: "You receive accurate but brutal criticism of your work. What happens next?",
-    options: [
-      {
-        label: "A",
-        text: "I absorb it and correct the work. Accuracy is the only criterion that matters.",
-        vector: [-1, -1, -2, -1, 0, 1]
-      },
-      {
-        label: "B",
-        text: "I acknowledge it publicly and process it privately at a later time when I am alone.",
-        vector: [-1, 0, 0, 1, 0, -1]
-      },
-      {
-        label: "C",
-        text: "I argue back. Even accurate criticism can be delivered wrongly, and I will not accept the framing.",
-        vector: [2, 0, 0, -1, 1, 2]
-      },
-      {
-        label: "D",
-        text: "The criticism lands harder than it should and stays with me far longer than they intended.",
-        vector: [-2, 1, 1, 2, 0, -2]
-      }
-    ]
-  },
-
-  // ── Q12 — Tests: Order, Projection, Action, Alignment ────────────────
-  {
-    id: 12,
-    text: "A cause you believe in is gaining momentum, but the movement is becoming tactically sloppy. What is your role?",
-    options: [
-      {
-        label: "A",
-        text: "I step into a coordinating position and impose the discipline the movement requires.",
-        vector: [2, -1, -2, 0, 0, 2]
-      },
-      {
-        label: "B",
-        text: "I continue contributing quietly and trust that the outcome matters more than the method.",
-        vector: [-1, -1, -1, 2, -1, -1]
-      },
-      {
-        label: "C",
-        text: "I break off and operate as a separate, more precise unit. Dilution is worse than separation.",
-        vector: [0, 1, 2, -1, 1, 0]
-      },
-      {
-        label: "D",
-        text: "I detach entirely. A cause that loses its rigor has lost its soul.",
-        vector: [-2, 2, 1, -1, 0, -2]
-      }
-    ]
-  },
-
-  // ── Q13 — Tests: Projection, Sight, Alignment, Action ────────────────
-  {
-    id: 13,
-    text: "You meet someone who seems to deliberately craft an air of mystery around themselves. Your reaction?",
-    options: [
-      {
-        label: "A",
-        text: "I find it irritating. Performed mystery is a form of social debt that others are asked to pay.",
-        vector: [1, -1, -1, -1, 1, 1]
-      },
-      {
-        label: "B",
-        text: "I am drawn in. The act of concealment implies something worth finding.",
-        vector: [0, 2, 1, 1, 0, -1]
-      },
-      {
-        label: "C",
-        text: "I mirror it back. I can do the same thing better and with more actual substance behind it.",
-        vector: [0, 1, 1, -1, 2, 1]
-      },
-      {
-        label: "D",
-        text: "I feel a quiet solidarity. The need to obscure yourself is something I understand completely.",
-        vector: [-2, 1, 0, 1, 0, -2]
-      }
-    ]
-  },
-
-  // ── Q14 — Tests: Order, Resonance, Alignment, Projection ─────────────
-  {
-    id: 14,
-    text: "You are given the power to rewrite one social contract that most people accept without question. What do you change?",
-    options: [
-      {
-        label: "A",
-        text: "The obligation to perform contentment. People should be permitted to be unhappy without explanation.",
-        vector: [-1, 1, 2, 2, -1, -1]
-      },
-      {
-        label: "B",
-        text: "The distribution of accountability. The people making decisions should bear their consequences directly.",
-        vector: [2, 0, -1, 0, -1, 2]
-      },
-      {
-        label: "C",
-        text: "The fiction of equal standing. Hierarchies exist whether we acknowledge them or not.",
-        vector: [1, 1, -2, -2, 2, 1]
-      },
-      {
-        label: "D",
-        text: "The ownership of private experience. What I feel is mine and I owe no one a window into it.",
-        vector: [-2, 0, 0, 0, 1, -2]
-      }
-    ]
-  },
-
-  // ── Q15 — Tests: Resonance, Alignment, Action, Sight ─────────────────
-  {
-    id: 15,
-    text: "A close friend asks for your honest opinion on a decision they have clearly already made.",
-    options: [
-      {
-        label: "A",
-        text: "I give them the honest assessment. They asked. That is consent.",
-        vector: [1, 0, 0, -1, 0, 2]
-      },
-      {
-        label: "B",
-        text: "I soften the truth just enough to protect them without abandoning it entirely.",
-        vector: [0, 0, 0, 2, -1, 0]
-      },
-      {
-        label: "C",
-        text: "I tell them what they want to hear. The decision is made. Honesty now is just cruelty with good branding.",
-        vector: [0, 0, -1, 1, 1, -1]
-      },
-      {
-        label: "D",
-        text: "I ask a series of questions that lead them to the conclusion I would have stated directly.",
-        vector: [0, 2, 0, 1, 1, 0]
-      }
-    ]
-  },
-
-  // ── Q16 — Tests: Order, Sight, Alignment, Action ─────────────────────
-  {
-    id: 16,
-    text: "What is your relationship to rules you did not create and were never asked to ratify?",
-    options: [
-      {
-        label: "A",
-        text: "I follow them when they are useful and discard them when they are not. That is pragmatism.",
-        vector: [1, 1, 2, -1, 1, 1]
-      },
-      {
-        label: "B",
-        text: "I follow them as written. Selective compliance is how systems degrade.",
-        vector: [-1, -2, -2, 1, -1, 0]
-      },
-      {
-        label: "C",
-        text: "I study them intensely for the gaps, then use the gaps.",
-        vector: [0, 2, 1, -2, 2, 1]
-      },
-      {
-        label: "D",
-        text: "I feel a low-grade, continuous irritation that I have learned to manage.",
-        vector: [-1, 1, 1, 0, 0, -1]
-      }
-    ]
-  },
-
-  // ── Q17 — Tests: Projection, Sight, Order, Action ────────────────────
-  {
-    id: 17,
-    text: "Describe your ideal operating environment.",
-    options: [
-      {
-        label: "A",
-        text: "High stakes. Clear metrics. People who execute without needing to be managed.",
-        vector: [2, -1, -2, -1, 1, 2]
-      },
-      {
-        label: "B",
-        text: "Quiet. Uninterrupted. With enough space to think in circles until something useful emerges.",
-        vector: [-2, 2, 1, -1, 0, -2]
-      },
-      {
-        label: "C",
-        text: "Fluid and collaborative. Good work emerges from the friction of different minds in close proximity.",
-        vector: [1, 1, 2, 2, -1, -1]
-      },
-      {
-        label: "D",
-        text: "Any environment I have restructured to match my requirements. The default setting is never optimal.",
-        vector: [1, 0, -2, -1, 1, 2]
-      }
-    ]
-  },
-
-  // ── Q18 — Tests: Projection, Alignment, Resonance, Action ────────────
-  {
-    id: 18,
-    text: "You watch someone take credit for work you contributed significantly to. Your next move?",
-    options: [
-      {
-        label: "A",
-        text: "I correct the record publicly, in the moment, without apology.",
-        vector: [2, -1, 0, -1, 1, 2]
-      },
-      {
-        label: "B",
-        text: "I say nothing now. I document everything and build a case to use at the correct time.",
-        vector: [-1, 0, -1, -1, 1, 0]
-      },
-      {
-        label: "C",
-        text: "I absorb the injustice. The satisfaction of doing good work does not require attribution.",
-        vector: [-2, 1, -1, 1, -1, -2]
-      },
-      {
-        label: "D",
-        text: "I ensure they become dependent on my contribution again, and I will not be so invisible next time.",
-        vector: [0, 1, -1, -2, 2, 1]
-      }
-    ]
-  },
-
-  // ── Q19 — Tests: Action, Order, Projection, Alignment ────────────────
-  // Revised option B tone: was too aspirational / social-desirability bait
-  {
-    id: 19,
-    text: "You are given a choice between a guaranteed moderate success or a high-risk outcome that is either total victory or total failure.",
-    options: [
-      {
-        label: "A",
-        text: "The guarantee. Compounding moderate success over time produces something significant and survivable.",
-        vector: [-1, -2, -2, 0, 0, 0]
-      },
-      {
-        label: "B",
-        text: "The risk. I am not interested in a life whose highest point is 'adequate.'",
-        vector: [2, 1, 2, -1, 1, 2]
-      },
-      {
-        label: "C",
-        text: "Neither option as presented. I renegotiate the terms before I accept the frame.",
-        vector: [0, 2, 1, 0, 1, 1]
-      },
-      {
-        label: "D",
-        text: "The guarantee. I will not bet what I have built against something I have not yet earned.",
-        vector: [-1, -1, -1, 1, -1, -1]
-      }
-    ]
-  },
-
-  // ── Q20 — Tests: Projection, Alignment, Resonance, Sight ─────────────
-  {
-    id: 20,
-    text: "How do you prefer people to experience you when they first encounter you?",
-    options: [
-      {
-        label: "A",
-        text: "As competent and direct. Warm first impressions are a form of advertising I find distasteful.",
-        vector: [1, -1, -2, -1, 1, 2]
-      },
-      {
-        label: "B",
-        text: "As curious and open. I want them to feel that the conversation could go anywhere.",
-        vector: [1, 2, 2, 1, 0, -1]
-      },
-      {
-        label: "C",
-        text: "As safe. I want them to believe they can trust me before they have any evidence to support it.",
-        vector: [0, 0, -1, 2, -1, 0]
-      },
-      {
-        label: "D",
-        text: "As unreadable. The advantage of being underestimated compounds over time.",
-        vector: [-2, 1, 0, -1, 2, -1]
-      }
-    ]
-  },
-
-  // ── Q21 — Tests: Resonance, Alignment, Action, Sight ─────────────────
-  {
-    id: 21,
-    text: "A relationship that has been sustaining you is quietly becoming one that is consuming you. When do you leave?",
-    options: [
-      {
-        label: "A",
-        text: "The moment I identify the pattern. I do not wait for confirmation of what I have already understood.",
-        vector: [1, 1, 0, -2, 1, 1]
-      },
-      {
-        label: "B",
-        text: "Not until I have done everything within my capability to correct the dynamic.",
-        vector: [-1, -1, -1, 2, -2, -1]
-      },
-      {
-        label: "C",
-        text: "Long after I should have. Leaving requires acknowledging I was wrong to stay this long.",
-        vector: [-2, 0, -1, 2, 0, -2]
-      },
-      {
-        label: "D",
-        text: "I restructure my participation so that I remain but the dynamic no longer reaches me.",
-        vector: [0, 2, 1, -1, 1, 0]
-      }
-    ]
-  },
-
-  // ── Q22 — Tests: Alignment, Projection, Resonance, Action ────────────
-  {
-    id: 22,
-    text: "What is the most honest description of your relationship with your own ambition?",
-    options: [
-      {
-        label: "A",
-        text: "It is the cleanest thing about me. It has never lied to me or asked me to be something I am not.",
-        vector: [2, 0, -1, -2, 2, 2]
-      },
-      {
-        label: "B",
-        text: "It exhausts me. I do not want the things I want, but I cannot seem to stop wanting them.",
-        vector: [-1, 1, 1, 2, 1, -1]
-      },
-      {
-        label: "C",
-        text: "It is something I have learned to suppress in social settings where it makes others uncomfortable.",
-        vector: [-1, 1, -1, 1, 1, 0]
-      },
-      {
-        label: "D",
-        text: "It is a practical instrument I deploy when necessary and store when it is not.",
-        vector: [0, 0, -2, -1, 1, 1]
-      }
-    ]
-  },
-
-  // ── Q23 — Tests: Alignment, Sight, Order, Resonance ──────────────────
-  {
-    id: 23,
-    text: "You are alone in a room with access to information you were never meant to see. What do you do?",
-    options: [
-      {
-        label: "A",
-        text: "I read every word. Information I was not meant to have is the most accurate information available.",
-        vector: [0, 2, 2, -2, 2, 1]
-      },
-      {
-        label: "B",
-        text: "I look away. The trust that was accidentally extended to me is not mine to violate.",
-        vector: [-1, -1, -1, 2, -2, -2]
-      },
-      {
-        label: "C",
-        text: "I read it and then decide whether the knowledge is a burden or an asset before proceeding.",
-        vector: [0, 1, 0, -1, 1, 0]
-      },
-      {
-        label: "D",
-        text: "I skim it just enough to know what I do not know, then leave. Partial information is a clean position.",
-        vector: [-1, 1, 1, -1, 1, -1]
-      }
-    ]
-  },
-
-  // ── Q24 — Tests: Action, Order, Sight, Resonance ─────────────────────
-  {
-    id: 24,
-    text: "What do you believe is the most underrated virtue?",
-    options: [
-      {
-        label: "A",
-        text: "Precision. Most problems are the result of imprecise thinking tolerated for too long.",
+        text: "I get up. The alarm and I had an agreement.",
         vector: [0, -2, -2, -1, 0, 2]
       },
       {
         label: "B",
-        text: "Patience. The capacity to let things unfold without imposing your timeline on them.",
-        vector: [-1, 1, 0, 2, -1, -2]
+        text: "I have six alarms scheduled. Each one represents a different stage of denial.",
+        vector: [-1, 0, -1, 1, 1, -2]
       },
       {
         label: "C",
-        text: "Audacity. The willingness to act on a conviction before the evidence fully supports it.",
-        vector: [2, 1, 2, -1, 1, 2]
+        text: "I wake up when my body decides civilization needs me.",
+        vector: [-1, 1, 2, 0, 0, -2]
       },
       {
         label: "D",
-        text: "Discretion. Knowing what not to say or do, and in which room, is a form of mastery.",
-        vector: [-1, 1, -1, 0, 1, -1]
+        text: "I snooze until getting ready becomes a household emergency.",
+        vector: [2, -1, 2, -1, 2, 2]
       }
     ]
   },
 
-  // ── Q25 — Tests: Projection, Sight, Order, Resonance, Action ─────────
-  // Final question. Designed to reinforce the most defining dimension of
-  // each cluster. Answer D now targets Fairy/Recluse territory more clearly.
+  // ── Q03 ──────────────────────────────────────────────────────────────
   {
-    id: 25,
-    text: "When you imagine the version of yourself that you will one day become, what is the dominant quality of that person?",
+    id: 3,
+    text: "There is one slice of someone else's pizza in the refrigerator. You are very hungry.",
     options: [
       {
         label: "A",
-        text: "Absolute command of their domain. Everyone else has conceded the territory.",
-        vector: [2, -1, -2, -1, 1, 2]
+        text: "I eat it. If questioned, I remember nothing.",
+        vector: [-1, -2, 1, -2, 2, 1]
       },
       {
         label: "B",
-        text: "A quiet depth that other people sense but cannot quite name or locate.",
-        vector: [-2, 2, 0, 0, 0, -2]
+        text: "I text the owner and wait for permission like a citizen.",
+        vector: [1, -2, -2, 2, -1, 0]
       },
       {
         label: "C",
-        text: "A warmth so reliable that people structure their lives around its presence.",
-        vector: [1, -1, -1, 2, -2, -1]
+        text: "I leave it and assemble a meal from crackers, mustard, and spiritual resilience.",
+        vector: [-1, 1, 1, 1, -1, -1]
       },
       {
         label: "D",
-        text: "A presence so alive to its own frequency that ordinary reality cannot quite contain it.",
-        // Targets Fairy/Inmyfeels: inward, abstract, empathetic, flow
-        vector: [-1, 2, 1, 2, 1, -2]
+        text: "I eat half and leave behind a useless pizza triangle. Technically, I did not finish it.",
+        vector: [0, -2, 1, -1, 1, 0]
+      }
+    ]
+  },
+
+  // ── Q04 ──────────────────────────────────────────────────────────────
+  {
+    id: 4,
+    text: "You leave for a trip tomorrow morning. What does packing look like?",
+    options: [
+      {
+        label: "A",
+        text: "I packed several days ago using a list refined through previous suffering.",
+        vector: [-1, -2, -2, 0, 0, 1]
+      },
+      {
+        label: "B",
+        text: "I will pack twenty minutes before leaving. Destiny knows my size.",
+        vector: [-1, 1, 2, 0, 0, -2]
+      },
+      {
+        label: "C",
+        text: "I check what everyone else needs, pack three communal chargers, and bring enough medicine to open a small clinic.",
+        vector: [2, -1, -1, 2, -2, 1]
+      },
+      {
+        label: "D",
+        text: "One small bag. Anything missing can become Future Me's problem.",
+        vector: [1, -1, 1, -1, 1, -1]
+      }
+    ]
+  },
+
+  // ── Q05 ──────────────────────────────────────────────────────────────
+  {
+    id: 5,
+    text: "You are lost in an unfamiliar place. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I quietly let the GPS recalculate. It has seen worse.",
+        vector: [0, -2, -1, -1, 0, -1]
+      },
+      {
+        label: "B",
+        text: "I ask the nearest person for directions.",
+        vector: [2, -2, 0, 1, 0, 1]
+      },
+      {
+        label: "C",
+        text: "I choose the road that feels correct and accept whatever mythology follows.",
+        vector: [-1, 2, 2, 0, 0, -2]
+      },
+      {
+        label: "D",
+        text: "I take control of navigation and temporarily suspend everyone else's opinions.",
+        vector: [1, -1, -2, -2, 1, 2]
+      }
+    ]
+  },
+
+  // ── Q06 ──────────────────────────────────────────────────────────────
+  {
+    id: 6,
+    text: "The group chat has 87 unread messages. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I read everything so I understand exactly how we lost our way.",
+        vector: [-1, -1, -2, 1, 0, 1]
+      },
+      {
+        label: "B",
+        text: "I ask, \"What did I miss?\" and make someone else summarize the ruins.",
+        vector: [1, -2, 0, 0, 1, 0]
+      },
+      {
+        label: "C",
+        text: "I post a meme without context and alter the direction of the conversation.",
+        vector: [2, 1, 2, 0, 1, -1]
+      },
+      {
+        label: "D",
+        text: "I mute it forever and continue loving everyone from a safe distance.",
+        vector: [-2, 0, -1, 1, -1, -2]
+      }
+    ]
+  },
+
+  // ── Q07 ──────────────────────────────────────────────────────────────
+  {
+    id: 7,
+    text: "You arrive at a party where you know almost nobody. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I find the other uncomfortable person and form a temporary alliance.",
+        vector: [1, 1, 0, 2, -1, 1]
+      },
+      {
+        label: "B",
+        text: "I introduce myself broadly and begin collecting people.",
+        vector: [2, -1, -1, 0, 1, 2]
+      },
+      {
+        label: "C",
+        text: "I locate the household pet. My social obligation is now complete.",
+        vector: [-2, -1, 1, 1, 0, -2]
+      },
+      {
+        label: "D",
+        text: "I observe quietly and invent private backstories for everyone.",
+        vector: [-2, 2, 0, -1, 0, -1]
+      }
+    ]
+  },
+
+  // ── Q08 ──────────────────────────────────────────────────────────────
+  {
+    id: 8,
+    text: "A friend cancels plans with you for the third time. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I ask what is really happening and set a clear boundary.",
+        vector: [1, -1, -2, 2, 0, 2]
+      },
+      {
+        label: "B",
+        text: "I say, \"No problem,\" then experience several private problems.",
+        vector: [-2, 1, 0, 1, 1, -2]
+      },
+      {
+        label: "C",
+        text: "I stop inviting them. No announcement, just natural consequences.",
+        vector: [-1, -2, -1, -1, 1, 1]
+      },
+      {
+        label: "D",
+        text: "I make better plans with someone else and post photos. This is not revenge; it is heavily documented scheduling.",
+        vector: [2, -1, 1, -2, 2, 1]
+      }
+    ]
+  },
+
+  // ── Q09 ──────────────────────────────────────────────────────────────
+  {
+    id: 9,
+    text: "A friend asks you to help them move, but you do not want to. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I arrive early with gloves, a dolly, and an alarming amount of competence.",
+        vector: [1, -2, -2, 1, -2, 2]
+      },
+      {
+        label: "B",
+        text: "I help, but I complain theatrically enough to receive emotional compensation.",
+        vector: [2, -1, 0, 0, -1, 1]
+      },
+      {
+        label: "C",
+        text: "I suddenly remember an obligation that may or may not exist.",
+        vector: [-1, 1, -1, -1, 2, -1]
+      },
+      {
+        label: "D",
+        text: "I say no honestly and send pizza.",
+        vector: [0, -2, 0, 1, 0, 0]
+      }
+    ]
+  },
+
+  // ── Q10 ──────────────────────────────────────────────────────────────
+  {
+    id: 10,
+    text: "A restaurant brings you the wrong meal. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I eat it. Apparently this is my life now.",
+        vector: [-1, -2, 0, 1, -1, -2]
+      },
+      {
+        label: "B",
+        text: "I politely ask for the meal I ordered.",
+        vector: [1, -2, -1, 1, 0, 1]
+      },
+      {
+        label: "C",
+        text: "I ask for the manager, a correction, and recognition that civilization has standards.",
+        vector: [2, -1, -2, -2, 2, 2]
+      },
+      {
+        label: "D",
+        text: "I recruit the table into swapping bites until the mistake becomes accidental tapas.",
+        vector: [1, 1, 2, 1, 0, -1]
+      }
+    ]
+  },
+
+  // ── Q11 ──────────────────────────────────────────────────────────────
+  {
+    id: 11,
+    text: "You receive a vague assignment at work. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I ask specific questions and turn the answers into a checklist.",
+        vector: [1, -1, -2, 0, 0, 1]
+      },
+      {
+        label: "B",
+        text: "I build a quick version so people can react to something real.",
+        vector: [0, 1, 1, -1, 0, 1]
+      },
+      {
+        label: "C",
+        text: "I wait for clearer instructions. I refuse to be blamed creatively.",
+        vector: [-1, -2, -1, -1, 1, -2]
+      },
+      {
+        label: "D",
+        text: "I reshape it into the project I think they should have requested.",
+        vector: [1, 2, 2, 0, 1, 2]
+      }
+    ]
+  },
+
+  // ── Q12 ──────────────────────────────────────────────────────────────
+  {
+    id: 12,
+    text: "A meeting has continued fifteen minutes beyond the point of usefulness. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I summarize the decisions, assign next steps, and end it.",
+        vector: [1, -1, -2, -1, 0, 2]
+      },
+      {
+        label: "B",
+        text: "I make a joke before the collective spirit leaves the body.",
+        vector: [2, 1, 1, 1, 0, 1]
+      },
+      {
+        label: "C",
+        text: "I remain visibly present while departing on every other level.",
+        vector: [-2, 1, 1, -1, 1, -2]
+      },
+      {
+        label: "D",
+        text: "I let everyone finish because being heard may matter more than the clock.",
+        vector: [0, 0, -1, 2, -1, -2]
+      }
+    ]
+  },
+
+  // ── Q13 ──────────────────────────────────────────────────────────────
+  {
+    id: 13,
+    text: "A coworker takes credit for something you did. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I correct the record publicly and immediately. Since we are sharing accomplishments, let us include the author.",
+        vector: [2, -1, -1, -1, 1, 2]
+      },
+      {
+        label: "B",
+        text: "I speak with them privately before deciding whether this was confusion or a career-limiting hobby.",
+        vector: [1, -1, -2, 1, 0, 1]
+      },
+      {
+        label: "C",
+        text: "I document everything and save the evidence for the proper season. Winter is coming, and it has timestamps.",
+        vector: [-2, 1, -2, -2, 2, 1]
+      },
+      {
+        label: "D",
+        text: "I let it go if the work succeeded and nobody was harmed. My halo is exhausting, but very flattering.",
+        vector: [-1, 1, 0, 2, -2, -2]
+      }
+    ]
+  },
+
+  // ── Q14 ──────────────────────────────────────────────────────────────
+  {
+    id: 14,
+    text: "You make a noticeable mistake at work. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I own it immediately and start fixing it. My shame can wait until lunch.",
+        vector: [1, -2, -2, 1, -1, 2]
+      },
+      {
+        label: "B",
+        text: "I repair it quietly before anyone realizes reality briefly malfunctioned.",
+        vector: [-2, -2, -1, -1, 1, 1]
+      },
+      {
+        label: "C",
+        text: "I explain the larger system that made the mistake possible. Welcome to my documentary.",
+        vector: [1, 1, 0, -1, 1, 0]
+      },
+      {
+        label: "D",
+        text: "I make a joke, ask for help, and turn the cleanup into an unwilling team-building exercise.",
+        vector: [2, 0, 1, 2, 0, -1]
+      }
+    ]
+  },
+
+  // ── Q15 ──────────────────────────────────────────────────────────────
+  {
+    id: 15,
+    text: "Someone criticizes something you are proud of. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I challenge them immediately and make them defend every criticism. If we are opening court, we are hearing evidence.",
+        vector: [2, -1, -1, -2, 1, 2]
+      },
+      {
+        label: "B",
+        text: "I explain my intention until they either understand or surrender.",
+        vector: [2, 2, -1, -1, 1, 2]
+      },
+      {
+        label: "C",
+        text: "I thank them, sit with it privately, and use whatever proves true.",
+        vector: [-1, 1, 0, 1, 0, -1]
+      },
+      {
+        label: "D",
+        text: "I conclude that they lack the equipment necessary to understand my genius.",
+        vector: [-2, 2, 1, -2, 2, -1]
+      }
+    ]
+  },
+
+  // ── Q16 ──────────────────────────────────────────────────────────────
+  {
+    id: 16,
+    text: "Someone close to you says, \"I'm fine.\" They are clearly not fine. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I stay nearby without forcing them to talk.",
+        vector: [-1, 0, 0, 2, -1, -2]
+      },
+      {
+        label: "B",
+        text: "I keep asking direct questions until we reach the truth.",
+        vector: [1, -1, -1, 2, 0, 2]
+      },
+      {
+        label: "C",
+        text: "I accept the sentence as delivered. \"Fine\" is a complete word.",
+        vector: [0, -2, -1, -2, 0, -2]
+      },
+      {
+        label: "D",
+        text: "I stop asking and start helping: make food, handle a chore, or solve the small problem orbiting the big one.",
+        vector: [0, -2, -1, 2, -2, 1]
+      }
+    ]
+  },
+
+  // ── Q17 ──────────────────────────────────────────────────────────────
+  {
+    id: 17,
+    text: "You realize you owe someone an apology. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I apologize clearly without attaching a defense brief.",
+        vector: [1, -1, -1, 2, -1, 1]
+      },
+      {
+        label: "B",
+        text: "I explain the full context, establish my intentions, and eventually approach \"sorry.\"",
+        vector: [2, 2, -1, 0, 1, 1]
+      },
+      {
+        label: "C",
+        text: "I do something thoughtful for them and quietly hope we can both agree that counts as an apology.",
+        vector: [-1, -1, 0, 2, -1, -1]
+      },
+      {
+        label: "D",
+        text: "I wait for the awkwardness to decompose naturally.",
+        vector: [-2, 1, 2, -1, 1, -2]
+      }
+    ]
+  },
+
+  // ── Q18 ──────────────────────────────────────────────────────────────
+  {
+    id: 18,
+    text: "Someone tells you a damaging secret. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I keep it locked inside, even when carrying it becomes uncomfortable.",
+        vector: [-2, -1, -2, 1, -1, 0]
+      },
+      {
+        label: "B",
+        text: "I tell one trusted person because I \"need advice,\" which is gossip wearing glasses.",
+        vector: [1, 1, -1, 1, 1, 0]
+      },
+      {
+        label: "C",
+        text: "I confront the person the secret is about.",
+        vector: [1, -1, -1, 0, 0, 2]
+      },
+      {
+        label: "D",
+        text: "I keep it until the information becomes strategically useful.",
+        vector: [2, 1, -2, -2, 2, 2]
+      }
+    ]
+  },
+
+  // ── Q19 ──────────────────────────────────────────────────────────────
+  {
+    id: 19,
+    text: "There is a rule everyone ignores because it is useless. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I follow it until it is officially changed. Rules do not become optional through loneliness.",
+        vector: [-1, -2, -2, -1, -1, 1]
+      },
+      {
+        label: "B",
+        text: "I ignore it quietly and continue with my life.",
+        vector: [-1, -2, 1, -1, 1, -1]
+      },
+      {
+        label: "C",
+        text: "I challenge it publicly and invite the argument.",
+        vector: [2, 1, 1, 0, 0, 2]
+      },
+      {
+        label: "D",
+        text: "I create a better system and persuade everyone to use it instead.",
+        vector: [2, 2, -1, 1, 0, 2]
+      }
+    ]
+  },
+
+  // ── Q20 ──────────────────────────────────────────────────────────────
+  {
+    id: 20,
+    text: "You find a wallet containing cash and identification. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I track down the owner and return everything personally. Their relief is enough, although a small parade would be tasteful.",
+        vector: [1, -2, -1, 2, -2, 1]
+      },
+      {
+        label: "B",
+        text: "I return the wallet. The cash appears to have chosen a new life.",
+        vector: [-1, -2, 0, -2, 2, 1]
+      },
+      {
+        label: "C",
+        text: "I turn it in at the nearest responsible place. I did not audition for a subplot today.",
+        vector: [0, -2, -2, -1, -1, -1]
+      },
+      {
+        label: "D",
+        text: "I post \"wallet found\" and make anyone claiming it pass an increasingly elaborate identity quiz. For twenty minutes, I am the Department of Wallet Security.",
+        vector: [2, 1, -1, 0, 1, 2]
+      }
+    ]
+  },
+
+  // ── Q21 ──────────────────────────────────────────────────────────────
+  {
+    id: 21,
+    text: "You unexpectedly receive $10,000 with no obligations attached. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I pay debt or save it before excitement develops an opinion.",
+        vector: [-1, -2, -2, -1, 0, 1]
+      },
+      {
+        label: "B",
+        text: "I use part of it to help family, friends, or a cause I care about.",
+        vector: [1, 1, -1, 2, -2, 1]
+      },
+      {
+        label: "C",
+        text: "I disappear on an adventure and return with stories instead of money.",
+        vector: [1, 2, 2, 0, 1, -1]
+      },
+      {
+        label: "D",
+        text: "I use it to gain access, influence, or an advantage I could not reach before.",
+        vector: [1, 1, -2, -2, 2, 2]
+      }
+    ]
+  },
+
+  // ── Q22 ──────────────────────────────────────────────────────────────
+  {
+    id: 22,
+    text: "Your neighbor's reckless behavior kills your favorite pet. Once the shock passes, what are you most likely to do?",
+    options: [
+      {
+        label: "A",
+        text: "I document everything and pursue every available legal consequence.",
+        vector: [1, -2, -2, -1, 0, 2]
+      },
+      {
+        label: "B",
+        text: "I go over there ready to kill them. This survey may now be evidence.",
+        vector: [2, 0, 1, -1, 2, 2]
+      },
+      {
+        label: "C",
+        text: "I withdraw, grieve privately, and remove them from my life forever.",
+        vector: [-2, 1, -1, 2, 0, -2]
+      },
+      {
+        label: "D",
+        text: "I need to understand exactly what happened before deciding what justice requires.",
+        vector: [-1, 2, -1, 0, 0, 1]
+      }
+    ]
+  },
+
+  // ── Q23 ──────────────────────────────────────────────────────────────
+  {
+    id: 23,
+    text: "You are stranded with a group during a dangerous storm. No signal. No immediate rescue. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I assign roles, count supplies, and establish a plan.",
+        vector: [2, -2, -2, 1, -1, 2]
+      },
+      {
+        label: "B",
+        text: "I quietly handle the most practical problems without trying to lead.",
+        vector: [-1, -2, -1, 0, -1, 1]
+      },
+      {
+        label: "C",
+        text: "I focus on keeping people calm and together.",
+        vector: [1, 1, 0, 2, -2, 1]
+      },
+      {
+        label: "D",
+        text: "I leave the group briefly to search for a route based mostly on instinct.",
+        vector: [-1, 2, 2, -1, 1, -1]
+      }
+    ]
+  },
+
+  // ── Q24 ──────────────────────────────────────────────────────────────
+  {
+    id: 24,
+    text: "You become invisible for twenty-four hours. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I observe people privately to learn what they are really like.",
+        vector: [-2, 2, -1, -1, 1, -1]
+      },
+      {
+        label: "B",
+        text: "I help people anonymously and leave them wondering what happened.",
+        vector: [-1, 1, 1, 2, -2, 1]
+      },
+      {
+        label: "C",
+        text: "I steal, spy, or settle a few old accounts. Let us not waste a miracle.",
+        vector: [-1, 1, -1, -2, 2, 2]
+      },
+      {
+        label: "D",
+        text: "I haunt people, move objects, and become a minor regional legend.",
+        vector: [2, 2, 2, 0, 1, 1]
+      }
+    ]
+  },
+
+  // ── Q25 ──────────────────────────────────────────────────────────────
+  {
+    id: 25,
+    text: "Your closest friend is marrying someone you believe will make them miserable. The wedding is tomorrow. What do you do?",
+    options: [
+      {
+        label: "A",
+        text: "I tell them plainly tonight, even if the friendship does not survive the conversation.",
+        vector: [1, -1, -1, 1, -1, 2]
+      },
+      {
+        label: "B",
+        text: "I say nothing and support them. Adults are allowed to choose their own terrible sequels.",
+        vector: [-1, 1, 0, 1, -1, -2]
+      },
+      {
+        label: "C",
+        text: "I gather evidence and recruit two trusted people for an intervention. Congratulations, this is now a task force.",
+        vector: [2, 1, -2, 1, -1, 2]
+      },
+      {
+        label: "D",
+        text: "I create enough chaos to delay the wedding. I do not have a plan, but apparently neither do they.",
+        vector: [2, 1, 2, 0, 1, 2]
       }
     ]
   }
