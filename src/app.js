@@ -202,8 +202,7 @@ function finishQuiz() {
   el.progressBar.style.width = '100%';
   el.progressLabel.textContent = `QUERY ${QUESTIONS.length} / ${QUESTIONS.length}`;
 
-  const scoreVector = accumulateScore(state.selectedVectors);
-  const archetype = findClosestArchetype(scoreVector);
+  const archetype = scoreAssessment(state.selectedVectors);
 
   transitionTo(screens.quiz, screens.result, () => {
     populateResult(archetype);

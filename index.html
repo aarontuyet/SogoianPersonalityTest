@@ -79,14 +79,16 @@
     <div class="scan-lines" aria-hidden="true"></div>
 
     <div class="result__container">
+      <!-- Hero image — full bleed, ~50vh, above the card -->
+      <div class="result__hero-wrap">
+        <img id="result-image" class="result__hero-image" src="" alt="" />
+      </div>
+
       <!-- Capturable card for html2canvas -->
       <div id="result-card" class="result__card">
         <div class="result__card-header">
           <p class="result__card-label">CLASSIFICATION RESULT</p>
           <h2 id="result-archetype-name" class="result__archetype-name"></h2>
-        </div>
-        <div class="result__card-image-wrap">
-          <img id="result-image" class="result__image" src="" alt="" />
         </div>
         <div class="result__card-analysis">
           <p id="result-analysis" class="result__analysis"></p>
@@ -121,16 +123,16 @@
           referrerpolicy="no-referrer"
           defer></script>
 
-  <!-- Service Worker Registration -->
+  <!-- Service Worker Registration disabled for v1.
+       Re-enable once archetype images are finalized and sw.js precache list is complete.
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {
-          // SW registration failed silently — app still functions
-        });
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
       });
     }
   </script>
+  -->
 
 </body>
 </html>

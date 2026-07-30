@@ -3,7 +3,7 @@
 ---
 
 ## Current Status
-**DEPLOYMENT READY** — All code complete. All deployment blockers resolved. The application runs end-to-end. Cloudflare Pages can be connected to the `main` branch with no build command. Remaining items before the experience is fully realized (archetype images, PWA icons) are human-owned art assets that do not block the quiz from functioning.
+**ASSESSMENT REFINED** — Scoring normalization fix applied, 7 archetype coordinates corrected against steering docs, 100 question vectors audited and fixed (primary issue: Alignment sign errors throughout), 2 redundant questions redesigned, engine diagnostic mode added. Application functionally complete and assessment-coherent. Ready for human calibration pass.
 
 ---
 
@@ -116,3 +116,4 @@ Build output directory: /
 | 03 | Phase 4 + 5 executed. engine.js and app.js written. Application functionally complete. |
 | 04 | Verification pass. Four bugs found and fixed. |
 | 05 | Deployment prep. Steering docs updated. Specs created. SW disabled. Manifest cleaned. Answer lock guard. Image fallback. Path audit. _headers. README. |
+| 06 | Assessment refinement. Normalization fix. 7 archetype coordinate corrections. Alignment sign errors fixed across 100 vectors. 2 questions redesigned. Diagnostic mode added to engine.js. |
