@@ -1,84 +1,28 @@
-/**
- * Service Worker — Sogoian Personality Assessment
- * Cache-first strategy. Precaches all critical static assets.
- * Bump CACHE_VERSION on any deployment to invalidate stale caches.
- */
+// sw.js — CACHE KILL SWITCH — 20260731-2
 
-const CACHE_VERSION = 'sogoian-v1';
-
-const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/assets/css/style.css',
-  '/src/questions.js',
-  '/src/engine.js',
-  '/src/app.js',
-  // Archetype images
-  '/assets/images/theGeneral.jpg',
-  '/assets/images/theCaretaker.jpg',
-  '/assets/images/theOverachiever.jpg',
-  '/assets/images/theAngel.jpg',
-  '/assets/images/theInmyfeels.jpg',
-  '/assets/images/theCreative.jpg',
-  '/assets/images/theFairy.jpg',
-  '/assets/images/theRecluse.jpg',
-  '/assets/images/theMadScientist.jpg',
-  '/assets/images/theTrickster.jpg',
-  '/assets/images/theDeviant.jpg',
-  '/assets/images/theManipulator.jpg',
-];
-
-// ── Install: precache all assets ──────────────────────────────────────────────
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS);
-    }).then(() => self.skipWaiting())
-  );
+self.addEventListener('install', event => {
+  event.waitUntil(self.skipWaiting());
 });
 
-// ── Activate: purge old caches ────────────────────────────────────────────────
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_VERSION)
-          .map((name) => caches.delete(name))
-      );
-    }).then(() => self.clients.claim())
-  );
-});
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const cacheNames = await caches.keys();
 
-// ── Fetch: cache-first, network fallback ─────────────────────────────────────
-self.addEventListener('fetch', (event) => {
-  // Only handle GET requests for same-origin or precached CDN assets
-  if (event.request.method !== 'GET') return;
+    await Promise.all(
+      cacheNames.map(cacheName => caches.delete(cacheName))
+    );
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      // Not in cache — fetch from network and cache the response
-      return fetch(event.request).then((networkResponse) => {
-        // Only cache valid responses from our own origin
-        if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          networkResponse.type === 'basic'
-        ) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_VERSION).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // Network failed and nothing in cache — return the offline shell
-        return caches.match('/index.html');
-      });
-    })
-  );
+    const openPages = await self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    });
+
+    await self.registration.unregister();
+
+    await Promise.all(
+      openPages.map(page =>
+        page.navigate(page.url).catch(() => undefined)
+      )
+    );
+  })());
 });
