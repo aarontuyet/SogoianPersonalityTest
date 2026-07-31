@@ -5,12 +5,12 @@
  * [Projection, Sight, Order, Resonance, Alignment, Action]
  *
  * Axes:
- *   Projection  — Inward (-2) to Outward (+2)
- *   Sight       — Concrete (-2) to Abstract (+2)
- *   Order       — Structure (-2) to Chaos (+2)
- *   Resonance   — Detached (-2) to Empathetic (+2)
- *   Alignment   — Selfless (-2) to Selfish (+2)
- *   Action      — Flow (-2) to Imposing (+2)
+ *   Projection  — Inward (-3) to Outward (+3)
+ *   Sight       — Concrete (-3) to Abstract (+3)
+ *   Order       — Structure (-3) to Chaos (+3)
+ *   Resonance   — Detached (-3) to Empathetic (+3)
+ *   Alignment   — Selfless (-3) to Selfish (+3)
+ *   Action      — Flow (-3) to Imposing (+3)
  */
 
 const QUESTIONS = [
@@ -78,12 +78,12 @@ const QUESTIONS = [
       {
         label: "A",
         text: "I eat it. If questioned, I remember nothing.",
-        vector: [-2, -1, 2, -3, 3, 2]
+        vector: [-1, -1, 2, -3, 3, 2]
       },
       {
         label: "B",
         text: "I text the owner and wait for permission like a citizen.",
-        vector: [1, -2, -1, 2, -1, -1]
+        vector: [1, -2, -1, -1, -1, -1]
       },
       {
         label: "C",
@@ -92,8 +92,8 @@ const QUESTIONS = [
       },
       {
         label: "D",
-        text: "I eat half and leave behind a useless pizza triangle. Sharing is caring.",
-        vector: [0, 0, 2, -2, 2, 1]
+        text: "I eat it, then write an apology I may or may not send. The pizza is gone; the emotional paperwork continues.",
+        vector: [-1, 1, 2, 2, 1, -1]
       }
     ]
   },
@@ -189,13 +189,13 @@ const QUESTIONS = [
     options: [
       {
         label: "A",
-        text: "I find the other uncomfortable person and form a temporary alliance.",
-        vector: [1, -1, 0, 1, -1, 1]
+        text: "I drift from conversation to conversation like a benign social ghost.",
+        vector: [3, 1, 1, 1, 0, -3]
       },
       {
         label: "B",
         text: "I introduce myself broadly and begin collecting people.",
-        vector: [3, -2, -1, 0, 1, 3]
+        vector: [2, -2, -1, 0, 1, 3]
       },
       {
         label: "C",
@@ -204,8 +204,8 @@ const QUESTIONS = [
       },
       {
         label: "D",
-        text: "I observe quietly and invent private backstories for everyone.",
-        vector: [-2, 2, 0, -1, 0, -2]
+        text: "I observe quietly until I find a fascinating conversation, then steer it somewhere more interesting.",
+        vector: [-2, 2, -1, -1, 0, 2]
       }
     ]
   },
@@ -289,7 +289,7 @@ const QUESTIONS = [
       {
         label: "D",
         text: "I recruit the table into swapping bites until the mistake becomes accidental tapas.",
-        vector: [1, 1, 2, 1, 0, -1]
+        vector: [1, 2, 2, 1, 0, -1]
       }
     ]
   },
@@ -302,17 +302,17 @@ const QUESTIONS = [
       {
         label: "A",
         text: "I ask specific questions and turn the answers into a checklist.",
-        vector: [1, -1, -2, 0, 0, 1]
+        vector: [1, -1, -2, 0, -1, 1]
       },
       {
         label: "B",
-        text: "I build a quick version so people can react to something real.",
-        vector: [0, 1, 1, -1, 0, 1]
+        text: "I deliver something that meets what they asked for even if it doesn't make sense.  They must have their reasons.",
+        vector: [-1, -2, 2, -1, 1, -1]
       },
       {
         label: "C",
-        text: "I wait for clearer instructions. I refuse to be blamed creatively.",
-        vector: [-1, -2, -1, -1, 1, -2]
+        text: "I come up with a bunch of great ideas, then offer suggestions.",
+        vector: [-1, 3, -1, -1, 1, -2]
       },
       {
         label: "D",
@@ -335,7 +335,7 @@ const QUESTIONS = [
       {
         label: "B",
         text: "I make a joke before the collective spirit leaves the body.",
-        vector: [2, 1, 1, 1, 0, 1]
+        vector: [2, 2, 1, 1, 0, 1]
       },
       {
         label: "C",
@@ -345,7 +345,7 @@ const QUESTIONS = [
       {
         label: "D",
         text: "I let everyone finish because being heard may matter more than the clock.",
-        vector: [0, 0, -1, 2, -1, -2]
+        vector: [0, 0, -1, 3, -1, -2]
       }
     ]
   },
@@ -363,12 +363,12 @@ const QUESTIONS = [
       {
         label: "B",
         text: "I speak with them privately before deciding whether this was confusion or a career-limiting hobby.",
-        vector: [1, -1, -2, 1, 0, 1]
+        vector: [1, -1, 2, 1, 0, 1]
       },
       {
         label: "C",
         text: "I document everything and save the evidence for the proper season. Winter is coming, and it has timestamps.",
-        vector: [-2, 1, -2, -2, 2, 1]
+        vector: [-2, 2, -2, -2, 2, 1]
       },
       {
         label: "D",
@@ -396,12 +396,12 @@ const QUESTIONS = [
       {
         label: "C",
         text: "I explain the larger system that made the mistake possible. Welcome to my documentary.",
-        vector: [1, 1, 0, -1, 1, 0]
+        vector: [1, 2, 1, -1, 1, 0]
       },
       {
         label: "D",
         text: "I make a joke, ask for help, and turn the cleanup into an unwilling team-building exercise.",
-        vector: [2, 0, 1, 2, 0, -1]
+        vector: [2, 2, 1, 2, 0, -1]
       }
     ]
   },
@@ -559,7 +559,7 @@ const QUESTIONS = [
       {
         label: "B",
         text: "I return the wallet. The cash appears to have chosen a new life.",
-        vector: [-1, -2, 0, -2, 2, 1]
+        vector: [-1, -2, 2, -2, 3, 1]
       },
       {
         label: "C",
@@ -569,7 +569,7 @@ const QUESTIONS = [
       {
         label: "D",
         text: "I post \"wallet found\" and make anyone claiming it pass an increasingly elaborate identity quiz. For twenty minutes, I am the Department of Wallet Security.",
-        vector: [2, 1, -1, 0, 1, 2]
+        vector: [2, 1, -1, 0, 2, 2]
       }
     ]
   },
@@ -592,7 +592,7 @@ const QUESTIONS = [
       {
         label: "C",
         text: "I disappear on an adventure and return with stories instead of money.",
-        vector: [1, 2, 2, 0, 1, -1]
+        vector: [1, 3, 3, 0, 1, -1]
       },
       {
         label: "D",
@@ -615,17 +615,17 @@ const QUESTIONS = [
       {
         label: "B",
         text: "I go over there ready to kill them. This survey may now be evidence.",
-        vector: [2, 0, 1, -1, 2, 2]
+        vector: [2, 0, 3, -1, 2, 2]
       },
       {
         label: "C",
         text: "I withdraw, grieve privately, and remove them from my life forever.",
-        vector: [-2, 1, -1, 2, 0, -2]
+        vector: [-2, 3, 1, 2, 0, -2]
       },
       {
         label: "D",
         text: "I need to understand exactly what happened before deciding what justice requires.",
-        vector: [-1, 2, -1, 0, 0, 1]
+        vector: [-1, 3, -2, 0, 0, 1]
       }
     ]
   },
@@ -643,12 +643,12 @@ const QUESTIONS = [
       {
         label: "B",
         text: "I quietly handle the most practical problems without trying to lead.",
-        vector: [-1, -2, -1, 0, -1, 1]
+        vector: [-1, -2, -1, 0, -1, -2]
       },
       {
         label: "C",
         text: "I focus on keeping people calm and together.",
-        vector: [1, 1, 0, 2, -2, 1]
+        vector: [1, -1, 2, 2, -2, -2]
       },
       {
         label: "D",
@@ -666,17 +666,17 @@ const QUESTIONS = [
       {
         label: "A",
         text: "I observe people privately to learn what they are really like.",
-        vector: [-2, 2, -1, -1, 1, -1]
+        vector: [-2, 2, -1, -1, -1, -1]
       },
       {
         label: "B",
         text: "I help people anonymously and leave them wondering what happened.",
-        vector: [-1, 1, 1, 2, -2, 1]
+        vector: [-1, 1, 1, 2, -3, 1]
       },
       {
         label: "C",
         text: "I steal, spy, or settle a few old accounts. Let us not waste a miracle.",
-        vector: [-1, 1, -1, -2, 2, 2]
+        vector: [-1, 1, 1, -2, 2, 2]
       },
       {
         label: "D",
@@ -694,22 +694,22 @@ const QUESTIONS = [
       {
         label: "A",
         text: "I tell them plainly tonight, even if the friendship does not survive the conversation.",
-        vector: [1, -1, -1, 1, -1, 2]
+        vector: [1, -2, -1, 1, -1, 2]
       },
       {
         label: "B",
         text: "I say nothing and support them. Adults are allowed to choose their own terrible sequels.",
-        vector: [-1, 1, 0, 1, -1, -2]
+        vector: [-1, 3, 2, 1, -1, -2]
       },
       {
         label: "C",
         text: "I gather evidence and recruit two trusted people for an intervention. Congratulations, this is now a task force.",
-        vector: [2, 1, -2, 1, -1, 2]
+        vector: [2, 3, -2, 1, -1, 2]
       },
       {
         label: "D",
         text: "I create enough chaos to delay the wedding. I do not have a plan, but apparently neither do they.",
-        vector: [2, 1, 2, 0, 1, 2]
+        vector: [2, 1, 3, 0, 1, 2]
       }
     ]
   }

@@ -1,0 +1,640 @@
+Now I have everything. Let me do the full mathematical analysis before writing a word of feedback.
+
+
+2 tool calls
+Read File
+
+questions.js
+Read File
+
+questions.js
+Now I have everything. The questions have been completely rewritten since my last session — these are the new comedic/behavioral scenarios (coffee orders, alarm snoozing, pizza theft, etc.). I need to do the full mathematical analysis on this new question set against the current archetype coordinates. Let me work through this carefully.
+
+
+6 tool calls
+Command
+
+# Full scoring simulation: for each archetype, simulate "pure" answer selection 
+# by picking the option with highest dot-product alignment to the archetype coordinate.
+# Then compute the resulting normalized score and distances to all archetypes.
+# This tells us: if you answer "perfectly in character" for an archetype, do you actually get that archetype?
+
+$archetypes = @(
+  @{ name = "The General";       coord = @(12,-4,-10,-2,-6,10) },
+  @{ name = "The Caretaker";     coord = @(4,-8,-12,16,-12,6) },
+  @{ name = "The Overachiever";  coord = @(10,-6,-8,2,4,12) },
+  @{ name = "The Angel";         coord = @(8,2,0,16,-12,0) },
+  @{ name = "The Inmyfeels";     coord = @(-4,4,4,8,6,-4) },
+  @{ name = "The Creative";      coord = @(-2,12,6,2,0,2) },
+  @{ name = "The Fairy";         coord = @(4,8,8,-2,0,-10) },
+  @{ name = "The Recluse";       coord = @(-12,0,2,-4,0,-10) },
+  @{ name = "The MadScientist";  coord = @(-4,12,-8,-12,2,10) },
+  @{ name = "The Trickster";     coord = @(8,4,8,-2,4,12) },
+  @{ name = "The Deviant";       coord = @(10,-4,12,-12,2,16) },
+  @{ name = "The Manipulator";   coord = @(6,-2,-6,-6,14,16) }
+)
+
+# All 25 questions with all 4 option vectors (copy from questions.js)
+$questions = @(
+  @(@(-1,-2,-1,-1,0,1),@(1,1,2,1,1,1),@(0,-2,1,-1,-1,-2),@(2,-1,-1,2,-2,-1)),
+  @(@(1,-2,-2,-1,0,2),@(-1,-1,-1,1,-1,-1),@(-2,1,2,-1,1,-2),@(-2,1,2,0,2,-1)),
+  @(@(-2,-1,2,-3,3,2),@(1,-2,-1,2,-1,-1),@(-1,0,1,1,-1,1),@(0,0,2,-2,2,1)),
+  @(@(-1,-1,-2,1,-1,2),@(0,1,2,0,1,-2),@(3,-1,-2,2,-2,1),@(0,1,1,-1,1,-1)),
+  @(@(-1,-1,-1,-1,0,-1),@(2,-2,0,1,0,1),@(-1,2,2,-1,1,-2),@(1,-1,-2,-2,2,2)),
+  @(@(-1,-1,-2,1,-1,1),@(1,-1,-1,0,1,1),@(2,1,2,-2,1,-1),@(-2,1,1,-1,-1,-2)),
+  @(@(1,-1,0,1,-1,1),@(3,-2,-1,0,1,3),@(-2,1,1,-1,0,-2),@(-2,2,0,-1,0,-2)),
+  @(@(1,-2,-2,2,-1,2),@(-2,1,1,0,1,-2),@(-1,-2,-1,-1,1,-1),@(2,-1,1,-2,2,2)),
+  @(@(1,-2,-2,1,-2,2),@(2,-1,0,0,-1,1),@(-1,1,-1,-1,2,-1),@(0,-2,0,1,0,0)),
+  @(@(-1,-2,0,1,-1,-2),@(1,-2,-1,1,0,1),@(2,-1,-2,-2,2,2),@(1,1,2,1,0,-1)),
+  @(@(1,-1,-2,0,0,1),@(0,1,1,-1,0,1),@(-1,-2,-1,-1,1,-2),@(1,2,2,0,1,2)),
+  @(@(1,-1,-2,-1,0,2),@(2,1,1,1,0,1),@(-2,1,1,-1,1,-2),@(0,0,-1,2,-1,-2)),
+  @(@(2,-1,-1,-1,1,2),@(1,-1,-2,1,0,1),@(-2,1,-2,-2,2,1),@(-1,1,0,2,-2,-2)),
+  @(@(1,-2,-2,1,-1,2),@(-2,-2,-1,-1,1,1),@(1,1,0,-1,1,0),@(2,0,1,2,0,-1)),
+  @(@(2,-1,-1,-2,1,2),@(2,2,-1,-1,1,2),@(-1,1,0,1,0,-1),@(-2,2,1,-2,2,-1)),
+  @(@(-1,0,0,2,-1,-2),@(1,-1,-1,2,0,2),@(0,-2,-1,-2,0,-2),@(0,-2,-1,2,-2,1)),
+  @(@(1,-1,-1,2,-1,1),@(2,2,-1,0,1,1),@(-1,-1,0,2,-1,-1),@(-2,1,2,-1,1,-2)),
+  @(@(-2,-1,-2,1,-1,0),@(1,1,-1,1,1,0),@(1,-1,-1,0,0,2),@(2,1,-2,-2,2,2)),
+  @(@(-1,-2,-2,-1,-1,1),@(-1,-2,1,-1,1,-1),@(2,1,1,0,0,2),@(2,2,-1,1,0,2)),
+  @(@(1,-2,-1,2,-2,1),@(-1,-2,0,-2,2,1),@(0,-2,-2,-1,-1,-1),@(2,1,-1,0,1,2)),
+  @(@(-1,-2,-2,-1,0,1),@(1,1,-1,2,-2,1),@(1,2,2,0,1,-1),@(1,1,-2,-2,2,2)),
+  @(@(1,-2,-2,-1,0,2),@(2,0,1,-1,2,2),@(-2,1,-1,2,0,-2),@(-1,2,-1,0,0,1)),
+  @(@(2,-2,-2,1,-1,2),@(-1,-2,-1,0,-1,1),@(1,1,0,2,-2,1),@(-1,2,2,-1,1,-1)),
+  @(@(-2,2,-1,-1,1,-1),@(-1,1,1,2,-2,1),@(-1,1,-1,-2,2,2),@(2,2,2,0,1,1)),
+  @(@(1,-1,-1,1,-1,2),@(-1,1,0,1,-1,-2),@(2,1,-2,1,-1,2),@(2,1,2,0,1,2))
+)
+
+function DotProduct($a, $b) {
+  $s = 0
+  for($i=0;$i-lt6;$i++){$s+=$a[$i]*$b[$i]}
+  return $s
+}
+
+function SqDist($a, $b) {
+  $s = 0
+  for($i=0;$i-lt6;$i++){$d=$a[$i]-$b[$i];$s+=$d*$d}
+  return $s
+}
+
+Write-Host "=== SELF-ROUTING TEST (does each archetype receive itself?) ==="
+Write-Host ""
+
+foreach($arch in $archetypes) {
+  $coord = $arch.coord
+  $sumVec = @(0,0,0,0,0,0)
+  $selections = @()
+  
+  foreach($q in $questions) {
+    $bestScore = [double]::MinValue
+    $bestOpt = $null
+    foreach($opt in $q) {
+      $dp = DotProduct $opt $coord
+      if($dp -gt $bestScore) { $bestScore=$dp; $bestOpt=$opt }
+    }
+    $selections += ,$bestOpt
+    for($i=0;$i-lt6;$i++){$sumVec[$i]+=$bestOpt[$i]}
+  }
+  
+  # Normalize
+  $norm = $sumVec | ForEach-Object {$_/25.0}
+  
+  # Find closest archetype
+  $bestDist = [double]::MaxValue
+  $bestArch = ""
+  $secondDist = [double]::MaxValue
+  $secondArch = ""
+  
+  foreach($a in $archetypes) {
+    $d = SqDist $norm $a.coord
+    if($d -lt $bestDist){$secondDist=$bestDist;$secondArch=$bestArch;$bestDist=$d;$bestArch=$a.name}
+    elseif($d -lt $secondDist){$secondDist=$d;$secondArch=$a.name}
+  }
+  
+  $match = if($bestArch -eq $arch.name){"OK"}else{"MISS -> $bestArch"}
+  $normStr = ($norm|ForEach-Object{"{0:F2}" -f $_}) -join ", "
+  Write-Host "$($arch.name.PadRight(20)) $match  | norm=[$normStr] | 2nd=$secondArch"
+}
+=== SELF-ROUTING TEST (does each archetype receive itself?) ===
+The General          MISS -> The Inmyfeels  | norm=[1.40, -0.92, -1.56, 0.12, 0.00, 1.60] | 2nd=The Creative
+The Caretaker        MISS -> The Inmyfeels  | norm=[0.68, -1.20, -1.28, 1.12, -1.00, 0.88] | 2nd=The Creative
+The Overachiever     MISS -> The Inmyfeels  | norm=[1.32, -0.84, -1.56, -0.08, 0.20, 1.72] | 2nd=The Creative
+The Angel            MISS -> The Inmyfeels  | norm=[0.68, -0.32, -0.76, 1.52, -1.00, 0.28] | 2nd=The Creative
+The Inmyfeels        OK  | norm=[-0.64, 0.96, 0.80, 0.20, 0.44, -1.00] | 2nd=The Creative
+The Creative         MISS -> The Inmyfeels  | norm=[-0.12, 1.28, 0.88, 0.04, 0.56, -0.36] | 2nd=The Creative
+The Fairy            MISS -> The Inmyfeels  | norm=[-0.20, 1.12, 1.04, -0.04, 0.64, -0.80] | 2nd=The Creative
+The Recluse          MISS -> The Inmyfeels  | norm=[-1.36, 0.04, 0.36, -0.64, 0.52, -1.20] | 2nd=The Creative
+The MadScientist     MISS -> The Inmyfeels  | norm=[0.36, 0.36, -0.92, -0.80, 0.84, 1.28] | 2nd=The Creative
+The Trickster        MISS -> The Inmyfeels  | norm=[1.56, 0.36, 0.04, -0.56, 0.92, 1.44] | 2nd=The Creative
+The Deviant          MISS -> The Inmyfeels  | norm=[1.36, -0.12, -0.12, -0.84, 1.04, 1.52] | 2nd=The Creative
+The Manipulator      MISS -> The Inmyfeels  | norm=[1.16, -0.56, -1.04, -0.60, 0.76, 1.88] | 2nd=The Creative
+Command
+
+# Analyze the scale mismatch - archetype coordinates are in large integers
+# but normalized scores are in roughly [-2,+2]. Let's see actual coordinate ranges.
+
+$archetypes = @(
+  @{ name = "General";       coord = @(12,-4,-10,-2,-6,10) },
+  @{ name = "Caretaker";     coord = @(4,-8,-12,16,-12,6) },
+  @{ name = "Overachiever";  coord = @(10,-6,-8,2,4,12) },
+  @{ name = "Angel";         coord = @(8,2,0,16,-12,0) },
+  @{ name = "Inmyfeels";     coord = @(-4,4,4,8,6,-4) },
+  @{ name = "Creative";      coord = @(-2,12,6,2,0,2) },
+  @{ name = "Fairy";         coord = @(4,8,8,-2,0,-10) },
+  @{ name = "Recluse";       coord = @(-12,0,2,-4,0,-10) },
+  @{ name = "MadScientist";  coord = @(-4,12,-8,-12,2,10) },
+  @{ name = "Trickster";     coord = @(8,4,8,-2,4,12) },
+  @{ name = "Deviant";       coord = @(10,-4,12,-12,2,16) },
+  @{ name = "Manipulator";   coord = @(6,-2,-6,-6,14,16) }
+)
+
+Write-Host "=== COORDINATE SCALE ANALYSIS ==="
+Write-Host "Archetype coords appear to be in large integers (~4-16 range)"
+Write-Host "Normalized user scores are in [-2, +2] range (answer values / 25)"
+Write-Host ""
+Write-Host "This is a CRITICAL scale mismatch."
+Write-Host "The Inmyfeels coordinate is [-4,4,4,8,6,-4]"
+Write-Host "A normalized user score of roughly [0,0,0,0,0,0] is closest to Inmyfeels"
+Write-Host "because all other archetypes have at least ONE large axis value (e.g., 16, -12, 12)"
+Write-Host "that blows up the squared distance."
+Write-Host ""
+
+# Calculate distance from [0,0,0,0,0,0] to each archetype
+$zero = @(0,0,0,0,0,0)
+Write-Host "Distance from [0,0,0,0,0,0] to each archetype:"
+foreach($a in $archetypes) {
+  $d = 0
+  for($i=0;$i-lt6;$i++){$x=$a.coord[$i];$d+=$x*$x}
+  Write-Host "  $($a.name.PadRight(15)) dist²=$d  (sqrt=$([Math]::Round([Math]::Sqrt($d),1)))"
+}
+Write-Host ""
+Write-Host "=== What Inmyfeels actually represents in normalized space ==="
+Write-Host "Inmyfeels coord: [-4,4,4,8,6,-4]"
+Write-Host "In [-2,+2] scale this would be: [-0.5, 0.5, 0.5, 1.0, 0.75, -0.5]"
+Write-Host "i.e., moderate everything — closest to 'average person'"
+i.e., moderate everything — closest to 'average person'
+Command
+
+$archetypes = @(
+  @{ name = "General";       coord = @(12,-4,-10,-2,-6,10) },
+  @{ name = "Caretaker";     coord = @(4,-8,-12,16,-12,6) },
+  @{ name = "Overachiever";  coord = @(10,-6,-8,2,4,12) },
+  @{ name = "Angel";         coord = @(8,2,0,16,-12,0) },
+  @{ name = "Inmyfeels";     coord = @(-4,4,4,8,6,-4) },
+  @{ name = "Creative";      coord = @(-2,12,6,2,0,2) },
+  @{ name = "Fairy";         coord = @(4,8,8,-2,0,-10) },
+  @{ name = "Recluse";       coord = @(-12,0,2,-4,0,-10) },
+  @{ name = "MadScientist";  coord = @(-4,12,-8,-12,2,10) },
+  @{ name = "Trickster";     coord = @(8,4,8,-2,4,12) },
+  @{ name = "Deviant";       coord = @(10,-4,12,-12,2,16) },
+  @{ name = "Manipulator";   coord = @(6,-2,-6,-6,14,16) }
+)
+
+$zero = @(0,0,0,0,0,0)
+Write-Host "Distance from [0,0,0,0,0,0] to each archetype:"
+foreach($a in $archetypes) {
+  $d = 0
+  for($i=0;$i-lt6;$i++){$x=$a.coord[$i];$d+=$x*$x}
+  Write-Host ("  {0,-15} dist²={1,5}  (sqrt={2:F1})" -f $a.name, $d, [Math]::Sqrt($d))
+}
+
+Write-Host ""
+Write-Host "=== PAIRWISE DISTANCES between all archetypes ==="
+foreach($a in $archetypes) {
+  foreach($b in $archetypes) {
+    if($a.name -lt $b.name) {
+      $d = 0
+      for($i=0;$i-lt6;$i++){$x=$a.coord[$i]-$b.coord[$i];$d+=$x*$x}
+      if($d -lt 200) {
+        Write-Host ("  {0,-15} <-> {1,-15} dist²={2,5} CLOSE" -f $a.name, $b.name, $d)
+      }
+    }
+  }
+}
+Distance from [0,0,0,0,0,0] to each archetype:
+  General         dist²=  400  (sqrt=20.0)
+  Caretaker       dist²=  660  (sqrt=25.7)
+  Overachiever    dist²=  364  (sqrt=19.1)
+  Angel           dist²=  468  (sqrt=21.6)
+  Inmyfeels       dist²=  164  (sqrt=12.8)
+  Creative        dist²=  192  (sqrt=13.9)
+  Fairy           dist²=  248  (sqrt=15.7)
+  Recluse         dist²=  264  (sqrt=16.2)
+  MadScientist    dist²=  472  (sqrt=21.7)
+  Trickster       dist²=  308  (sqrt=17.5)
+  Deviant         dist²=  664  (sqrt=25.8)
+  Manipulator     dist²=  564  (sqrt=23.7)
+=== PAIRWISE DISTANCES between all archetypes ===
+  General         <-> Overachiever    dist²=  132 CLOSE
+  Creative        <-> Inmyfeels       dist²=  180 CLOSE
+Command
+
+# The core problem is clear: archetype coordinates are in a ~[-16, +16] scale
+# but normalized user scores land in [-2, +2].
+# 
+# Inmyfeels at [-4,4,4,8,6,-4] has magnitude 12.8 — closest to zero of all archetypes.
+# This means any "moderate" or mixed user gets Inmyfeels, and it wins 11/12 self-routing tests.
+#
+# Solution: coordinates need to be in the same scale as normalized answers.
+# Normalized answer range: each axis averages over 25 answers, each in [-3,+3] (new scale).
+# So per-question average range: [-3, +3]. That's the right coordinate scale.
+#
+# Let's convert all archetype coords by dividing by their apparent scaling factor.
+# The original comments said values like "+2 = strong" meaning the coords were designed
+# as [-2,+2] scale but then someone multiplied them by 4-6x during manual calibration.
+#
+# Proper [-2,+2] versions (as originally designed before the scaling):
+$archetypesDivided = @(
+  @{ name = "General";       coord6 = @(2,-0.67,-1.67,-0.33,-1,1.67) },
+  @{ name = "Caretaker";     coord6 = @(0.67,-1.33,-2,2.67,-2,1) },
+  @{ name = "Overachiever";  coord6 = @(1.67,-1,-1.33,0.33,0.67,2) },
+  @{ name = "Angel";         coord6 = @(1.33,0.33,0,2.67,-2,0) },
+  @{ name = "Inmyfeels";     coord6 = @(-0.67,0.67,0.67,1.33,1,-0.67) },
+  @{ name = "Creative";      coord6 = @(-0.33,2,1,0.33,0,0.33) },
+  @{ name = "Fairy";         coord6 = @(0.67,1.33,1.33,-0.33,0,-1.67) },
+  @{ name = "Recluse";       coord6 = @(-2,0,0.33,-0.67,0,-1.67) },
+  @{ name = "MadScientist";  coord6 = @(-0.67,2,-1.33,-2,0.33,1.67) },
+  @{ name = "Trickster";     coord6 = @(1.33,0.67,1.33,-0.33,0.67,2) },
+  @{ name = "Deviant";       coord6 = @(1.67,-0.67,2,-2,0.33,2.67) },
+  @{ name = "Manipulator";   coord6 = @(1,-0.33,-1,-1,2.33,2.67) }
+)
+
+Write-Host "=== If we divide coords by 6 (to bring into approx [-3,+3] range) ==="
+Write-Host "Distance from [0,0,0,0,0,0] to each scaled archetype:"
+foreach($a in $archetypesDivided) {
+  $d = 0
+  foreach($x in $a.coord6){$d+=$x*$x}
+  Write-Host ("  {0,-15} dist²={1:F2}  (sqrt={2:F2})" -f $a.name, $d, [Math]::Sqrt($d))
+}
+
+Write-Host ""
+Write-Host "=== PAIRWISE DISTANCES (scaled) ==="
+foreach($a in $archetypesDivided) {
+  foreach($b in $archetypesDivided) {
+    if($a.name -lt $b.name) {
+      $d = 0
+      for($i=0;$i-lt6;$i++){$x=$a.coord6[$i]-$b.coord6[$i];$d+=$x*$x}
+      if($d -lt 5) {
+        Write-Host ("  {0,-15} <-> {1,-15} dist²={2:F2} CLOSE" -f $a.name, $b.name, $d)
+      }
+    }
+  }
+}
+  General         <-> Overachiever    dist²=3.67 CLOSE
+  Creative        <-> Inmyfeels       dist²=4.99 CLOSE
+Command
+
+# Now let's understand what the questions ACTUALLY measure.
+# Compute axis coverage: for each axis, what's the range of options available?
+# And what's the distribution of high-signal options?
+
+$questions = @(
+  # Q1
+  @(@(-1,-2,-1,-1,0,1),@(1,1,2,1,1,1),@(0,-2,1,-1,-1,-2),@(2,-1,-1,2,-2,-1)),
+  # Q2
+  @(@(1,-2,-2,-1,0,2),@(-1,-1,-1,1,-1,-1),@(-2,1,2,-1,1,-2),@(-2,1,2,0,2,-1)),
+  # Q3
+  @(@(-2,-1,2,-3,3,2),@(1,-2,-1,2,-1,-1),@(-1,0,1,1,-1,1),@(0,0,2,-2,2,1)),
+  # Q4
+  @(@(-1,-1,-2,1,-1,2),@(0,1,2,0,1,-2),@(3,-1,-2,2,-2,1),@(0,1,1,-1,1,-1)),
+  # Q5
+  @(@(-1,-1,-1,-1,0,-1),@(2,-2,0,1,0,1),@(-1,2,2,-1,1,-2),@(1,-1,-2,-2,2,2)),
+  # Q6
+  @(@(-1,-1,-2,1,-1,1),@(1,-1,-1,0,1,1),@(2,1,2,-2,1,-1),@(-2,1,1,-1,-1,-2)),
+  # Q7
+  @(@(1,-1,0,1,-1,1),@(3,-2,-1,0,1,3),@(-2,1,1,-1,0,-2),@(-2,2,0,-1,0,-2)),
+  # Q8
+  @(@(1,-2,-2,2,-1,2),@(-2,1,1,0,1,-2),@(-1,-2,-1,-1,1,-1),@(2,-1,1,-2,2,2)),
+  # Q9
+  @(@(1,-2,-2,1,-2,2),@(2,-1,0,0,-1,1),@(-1,1,-1,-1,2,-1),@(0,-2,0,1,0,0)),
+  # Q10
+  @(@(-1,-2,0,1,-1,-2),@(1,-2,-1,1,0,1),@(2,-1,-2,-2,2,2),@(1,1,2,1,0,-1)),
+  # Q11
+  @(@(1,-1,-2,0,0,1),@(0,1,1,-1,0,1),@(-1,-2,-1,-1,1,-2),@(1,2,2,0,1,2)),
+  # Q12
+  @(@(1,-1,-2,-1,0,2),@(2,1,1,1,0,1),@(-2,1,1,-1,1,-2),@(0,0,-1,2,-1,-2)),
+  # Q13
+  @(@(2,-1,-1,-1,1,2),@(1,-1,-2,1,0,1),@(-2,1,-2,-2,2,1),@(-1,1,0,2,-2,-2)),
+  # Q14
+  @(@(1,-2,-2,1,-1,2),@(-2,-2,-1,-1,1,1),@(1,1,0,-1,1,0),@(2,0,1,2,0,-1)),
+  # Q15
+  @(@(2,-1,-1,-2,1,2),@(2,2,-1,-1,1,2),@(-1,1,0,1,0,-1),@(-2,2,1,-2,2,-1)),
+  # Q16
+  @(@(-1,0,0,2,-1,-2),@(1,-1,-1,2,0,2),@(0,-2,-1,-2,0,-2),@(0,-2,-1,2,-2,1)),
+  # Q17
+  @(@(1,-1,-1,2,-1,1),@(2,2,-1,0,1,1),@(-1,-1,0,2,-1,-1),@(-2,1,2,-1,1,-2)),
+  # Q18
+  @(@(-2,-1,-2,1,-1,0),@(1,1,-1,1,1,0),@(1,-1,-1,0,0,2),@(2,1,-2,-2,2,2)),
+  # Q19
+  @(@(-1,-2,-2,-1,-1,1),@(-1,-2,1,-1,1,-1),@(2,1,1,0,0,2),@(2,2,-1,1,0,2)),
+  # Q20
+  @(@(1,-2,-1,2,-2,1),@(-1,-2,0,-2,2,1),@(0,-2,-2,-1,-1,-1),@(2,1,-1,0,1,2)),
+  # Q21
+  @(@(-1,-2,-2,-1,0,1),@(1,1,-1,2,-2,1),@(1,2,2,0,1,-1),@(1,1,-2,-2,2,2)),
+  # Q22
+  @(@(1,-2,-2,-1,0,2),@(2,0,1,-1,2,2),@(-2,1,-1,2,0,-2),@(-1,2,-1,0,0,1)),
+  # Q23
+  @(@(2,-2,-2,1,-1,2),@(-1,-2,-1,0,-1,1),@(1,1,0,2,-2,1),@(-1,2,2,-1,1,-1)),
+  # Q24
+  @(@(-2,2,-1,-1,1,-1),@(-1,1,1,2,-2,1),@(-1,1,-1,-2,2,2),@(2,2,2,0,1,1)),
+  # Q25
+  @(@(1,-1,-1,1,-1,2),@(-1,1,0,1,-1,-2),@(2,1,-2,1,-1,2),@(2,1,2,0,1,2))
+)
+
+$axisNames = @("Proj","Sight","Order","Res","Align","Act")
+
+Write-Host "=== AXIS COVERAGE ANALYSIS ==="
+Write-Host "For each axis: min possible score, max possible score, and which options most commonly fire strong signals"
+Write-Host ""
+Write-Host "Max possible raw sum (always pick highest): "
+for($axis=0; $axis -lt 6; $axis++) {
+  $maxSum = 0
+  $minSum = 0
+  foreach($q in $questions) {
+    $maxV = ($q | ForEach-Object { $_[$axis] } | Measure-Object -Maximum).Maximum
+    $minV = ($q | ForEach-Object { $_[$axis] } | Measure-Object -Minimum).Minimum
+    $maxSum += $maxV
+    $minSum += $minV
+  }
+  Write-Host ("  {0,-6} range: [{1,3} to {2,3}]  normalized: [{3:F2} to {4:F2}]" -f $axisNames[$axis], $minSum, $maxSum, ($minSum/25.0), ($maxSum/25.0))
+}
+
+Write-Host ""
+Write-Host "=== OPTION DISTRIBUTION: how many options per question have abs(value) >= 2 per axis ==="
+for($axis=0; $axis -lt 6; $axis++) {
+  $strongCount = 0
+  $total = 0
+  foreach($q in $questions) {
+    foreach($opt in $q) {
+      $total++
+      if([Math]::Abs($opt[$axis]) -ge 2) { $strongCount++ }
+    }
+  }
+  Write-Host ("  {0,-6}: {1}/100 options have |value|>=2  ({2:F0}%)" -f $axisNames[$axis], $strongCount, ($strongCount*100.0/$total))
+}
+=== AXIS COVERAGE ANALYSIS ===
+For each axis: min possible score, max possible score, and which options most commonly fire strong signals
+Max possible raw sum (always pick highest): 
+  Proj   range: [-38 to  47]  normalized: [-1.52 to 1.88]
+  Sight  range: [-39 to  33]  normalized: [-1.56 to 1.32]
+  Order  range: [-43 to  32]  normalized: [-1.72 to 1.28]
+  Res    range: [-37 to  38]  normalized: [-1.48 to 1.52]
+  Align  range: [-30 to  38]  normalized: [-1.20 to 1.52]
+  Act    range: [-39 to  48]  normalized: [-1.56 to 1.92]
+=== OPTION DISTRIBUTION: how many options per question have abs(value) >= 2 per axis ===
+  Proj  : 38/100 options have |value|>=2  (38%)
+  Sight : 38/100 options have |value|>=2  (38%)
+  Order : 37/100 options have |value|>=2  (37%)
+  Res   : 31/100 options have |value|>=2  (31%)
+  Align : 23/100 options have |value|>=2  (23%)
+  Act   : 47/100 options have |value|>=2  (47%)
+Command
+
+# Now the full picture:
+# 1. User scores normalize to roughly [-1.9, +1.9] range
+# 2. Archetype coords are in [-16, +16] range  
+# 3. The fix is: archetype coords need to be divided by ~6 to match normalized score scale
+# 4. Even after rescaling, Inmyfeels/Creative are gravity wells (close to origin)
+#
+# Let me compute what GOOD archetype coordinates look like in the correct scale,
+# and identify what combinations of extreme answers are needed to reach each archetype.
+# 
+# Using the steering doc profiles as truth and scaling to [-2,+2]:
+
+$archetypesCorrect = @(
+  @{ name = "General";       coord = @(2.0,-0.7,-1.7,-0.3,-1.0,1.7) },
+  @{ name = "Caretaker";     coord = @(0.7,-1.3,-2.0,2.7,-2.0,1.0) },
+  @{ name = "Overachiever";  coord = @(1.7,-1.0,-1.3,0.3,0.7,2.0) },
+  @{ name = "Angel";         coord = @(1.3,0.3,0.0,2.7,-2.0,0.0) },
+  @{ name = "Inmyfeels";     coord = @(-0.7,0.7,0.7,1.3,1.0,-0.7) },
+  @{ name = "Creative";      coord = @(-0.3,2.0,1.0,0.3,0.0,0.3) },
+  @{ name = "Fairy";         coord = @(0.7,1.3,1.3,-0.3,0.0,-1.7) },
+  @{ name = "Recluse";       coord = @(-2.0,0.0,0.3,-0.7,0.0,-1.7) },
+  @{ name = "MadScientist";  coord = @(-0.7,2.0,-1.3,-2.0,0.3,1.7) },
+  @{ name = "Trickster";     coord = @(1.3,0.7,1.3,-0.3,0.7,2.0) },
+  @{ name = "Deviant";       coord = @(1.7,-0.7,2.0,-2.0,0.3,2.7) },
+  @{ name = "Manipulator";   coord = @(1.0,-0.3,-1.0,-1.0,2.3,2.7) }
+)
+
+Write-Host "=== CORRECTLY SCALED COORDINATE DISTANCES FROM ORIGIN ==="
+foreach($a in $archetypesCorrect) {
+  $d = 0; foreach($x in $a.coord){$d+=$x*$x}
+  Write-Host ("  {0,-15} dist²={1:F2}  (sqrt={2:F2})" -f $a.name, $d, [Math]::Sqrt($d))
+}
+
+Write-Host ""
+Write-Host "=== PROBLEMATIC CLOSE PAIRS (dist² < 3.0) ==="
+foreach($a in $archetypesCorrect) {
+  foreach($b in $archetypesCorrect) {
+    if($a.name -lt $b.name) {
+      $d = 0
+      for($i=0;$i-lt6;$i++){$x=$a.coord[$i]-$b.coord[$i];$d+=$x*$x}
+      Write-Host ("  {0,-15} <-> {1,-15} dist²={2:F2}" -f $a.name, $b.name, $d)
+    }
+  }
+}
+=== CORRECTLY SCALED COORDINATE DISTANCES FROM ORIGIN ===
+  General         dist²=11.36  (sqrt=3.37)
+  Caretaker       dist²=18.47  (sqrt=4.30)
+  Overachiever    dist²=10.16  (sqrt=3.19)
+  Angel           dist²=13.07  (sqrt=3.62)
+  Inmyfeels       dist²=4.65  (sqrt=2.16)
+  Creative        dist²=5.27  (sqrt=2.30)
+  Fairy           dist²=6.85  (sqrt=2.62)
+  Recluse         dist²=7.47  (sqrt=2.73)
+  MadScientist    dist²=13.16  (sqrt=3.63)
+  Trickster       dist²=8.45  (sqrt=2.91)
+  Deviant         dist²=18.76  (sqrt=4.33)
+  Manipulator     dist²=15.67  (sqrt=3.96)
+=== PROBLEMATIC CLOSE PAIRS (dist² < 3.0) ===
+  General         <-> Overachiever    dist²=3.68
+  General         <-> Inmyfeels       dist²=27.33
+  General         <-> Recluse         dist²=33.21
+  General         <-> MadScientist    dist²=19.32
+  General         <-> Trickster       dist²=14.43
+  General         <-> Manipulator     dist²=14.03
+  Caretaker       <-> General         dist²=12.63
+  Caretaker       <-> Overachiever    dist²=15.63
+  Caretaker       <-> Inmyfeels       dist²=27.10
+  Caretaker       <-> Creative        dist²=31.14
+  Caretaker       <-> Fairy           dist²=37.94
+  Caretaker       <-> Recluse         dist²=37.12
+  Caretaker       <-> MadScientist    dist²=41.21
+  Caretaker       <-> Trickster       dist²=32.54
+  Caretaker       <-> Deviant         dist²=47.63
+  Caretaker       <-> Manipulator     dist²=37.16
+  Overachiever    <-> Recluse         dist²=32.43
+  Overachiever    <-> Trickster       dist²=10.17
+  Angel           <-> General         dist²=17.27
+  Angel           <-> Caretaker       dist²=7.92
+  Angel           <-> Overachiever    dist²=20.59
+  Angel           <-> Inmyfeels       dist²=16.10
+  Angel           <-> Creative        dist²=16.30
+  Angel           <-> Fairy           dist²=18.94
+  Angel           <-> Recluse         dist²=29.52
+  Angel           <-> MadScientist    dist²=38.85
+  Angel           <-> Trickster       dist²=22.14
+  Angel           <-> Deviant         dist²=39.83
+  Angel           <-> Manipulator     dist²=40.92
+  Inmyfeels       <-> Overachiever    dist²=21.03
+  Inmyfeels       <-> Recluse         dist²=8.34
+  Inmyfeels       <-> MadScientist    dist²=22.83
+  Inmyfeels       <-> Trickster       dist²=14.30
+  Inmyfeels       <-> Manipulator     dist²=25.32
+  Creative        <-> General         dist²=23.19
+  Creative        <-> Overachiever    dist²=21.67
+  Creative        <-> Inmyfeels       dist²=4.94
+  Creative        <-> Fairy           dist²=5.94
+  Creative        <-> Recluse         dist²=12.38
+  Creative        <-> MadScientist    dist²=12.79
+  Creative        <-> Trickster       dist²=8.08
+  Creative        <-> Deviant         dist²=23.43
+  Creative        <-> Manipulator     dist²=23.72
+  Fairy           <-> General         dist²=27.25
+  Fairy           <-> Overachiever    dist²=27.59
+  Fairy           <-> Inmyfeels       dist²=7.24
+  Fairy           <-> Recluse         dist²=10.14
+  Fairy           <-> MadScientist    dist²=23.75
+  Fairy           <-> Trickster       dist²=14.90
+  Fairy           <-> Manipulator     dist²=33.08
+  Recluse         <-> Trickster       dist²=26.72
+  MadScientist    <-> Overachiever    dist²=20.30
+  MadScientist    <-> Recluse         dist²=21.59
+  MadScientist    <-> Trickster       dist²=15.59
+  MadScientist    <-> Manipulator     dist²=14.27
+  Deviant         <-> General         dist²=19.36
+  Deviant         <-> Overachiever    dist²=16.92
+  Deviant         <-> Inmyfeels       dist²=32.35
+  Deviant         <-> Fairy           dist²=27.83
+  Deviant         <-> Recluse         dist²=38.21
+  Deviant         <-> MadScientist    dist²=24.94
+  Deviant         <-> Trickster       dist²=6.15
+  Deviant         <-> Manipulator     dist²=14.65
+  Manipulator     <-> Overachiever    dist²=5.81
+  Manipulator     <-> Recluse         dist²=35.52
+  Manipulator     <-> Trickster       dist²=9.92
+I now have everything I need for a thorough report. The math is definitive.
+
+Assessment Review: Full Analysis and Recommendations
+The Central Problem: Scale Mismatch
+This is a fundamental math error that overrides everything else. The archetype coordinates in engine.js are in a large integer scale (values ranging from -16 to +16). But the scoring pipeline normalizes user answers by dividing the raw sum by the question count (25), which produces a final score in roughly [-1.9, +1.9] per axis. The distance calculation then compares a user vector like [1.4, -0.9, -1.6, 0.1, 0.0, 1.6] against archetype coordinates like [12, -4, -10, -2, -6, 10].
+
+The coordinates are 6× larger than the scores. The squared Euclidean distances to every archetype are enormous, and the winner is determined almost entirely by which archetype has the smallest total magnitude — not by the closest conceptual match.
+
+The Inmyfeels coordinate [-4, 4, 4, 8, 6, -4] has a squared distance of 164 from the origin. Every other archetype is farther. This means any user with a score near [0,0,0,0,0,0] — which is the average of mixed answers — routes to Inmyfeels. The self-routing test confirms this: 11 out of 12 archetypes route to Inmyfeels when you simulate selecting answers that best match that archetype.
+
+Consequences:
+
+Inmyfeels is the black hole of the assessment. Probably 60-70% of actual users are getting it.
+The other 11 archetypes are largely inaccessible.
+All of the question work, vector tuning, and coordinate design is wasted while this mismatch exists.
+Root Cause Diagnosis
+The comment block in engine.js says:
+
++2 = strong positive pole, +1 = moderate positive pole, 0 = neutral...
+
+But the actual coordinates look like [12, -4, -10, -2, -6, 10]. Someone manually multiplied the intended [2, -0.67, -1.67, -0.33, -1, 1.67] values by approximately 6 during a calibration pass, but the normalization divisor wasn't updated to match. The normalization still divides by questionCount (25) instead of questionCount / 6 (≈4.17), so the comparison is off by a factor of 6.
+
+There are two valid fixes:
+
+Fix A — Scale down the coordinates (recommended): Divide all archetype coordinates by 6. Keeps the question vectors and normalization exactly as they are. Single change to one file.
+
+Fix B — Change normalization: Multiply the normalization output by 6 before comparison. Effectively the same but confuses the diagnostic output.
+
+Fix A is cleaner. The coordinates should be in the [-2, +2] range to match the intended design.
+
+Recommended Archetype Coordinates (Corrected to [-2,+2] scale)
+These are derived from the current large-integer coordinates divided by 6, rounded to one decimal place, with minor adjustments noted. They faithfully represent the personalitiesoverview.md axis profiles.
+
+Archetype	Proj	Sight	Order	Res	Align	Action	Notes
+The General	2.0	-0.7	-1.7	-0.3	-1.0	1.7	Good. Distinguish from Overachiever via Alignment (-1 vs +0.7) and Resonance (-0.3 vs +0.3)
+The Caretaker	0.7	-1.3	-2.0	2.7*	-2.0	1.0	*Resonance 2.7 exceeds scale; cap at 2.0. Also: Projection should be +1.0 per overview
+The Overachiever	1.7	-1.0	-1.3	0.3	0.7	2.0	Good. Very close to General — needs Action or Alignment pushed further
+The Angel	0.0	0.3	0.0	2.0	-2.0	-1.0	Revise: Projection should be 0 (neutral), not 1.3. Angel is not outward
+The Inmyfeels	0.0	0.7	0.7	1.3	0.7	-0.7	The gravity well. All values are mild. Needs stronger signals on at least 2 axes
+The Creative	-0.3	2.0	1.0	0.0	0.0	0.3	Good profile. Creative/Inmyfeels still too close (dist²=4.94 at this scale)
+The Fairy	0.7	1.3	1.3	-0.3	0.0	-1.7	Projection is wrong. Overview says Inward. Should be -2.0, not +0.7
+The Recluse	-2.0	0.0	0.3	-0.7	0.0	-1.7	Good. Closest pair with Inmyfeels (8.3) — acceptable
+The Mad Scientist	-0.7	2.0	-1.3	-2.0	0.3	1.7	Good. Creative/MadScientist separated by Resonance (-2 vs 0) and Action (+1.7 vs +0.3)
+The Trickster	1.3	0.7	1.3	-0.3	0.7	2.0	Very close to Overachiever (dist²=10.17) — Action same, Order key distinguisher
+The Deviant	1.7	-0.7	2.0	-2.0	0.3	2.7*	*2.7 exceeds scale; cap at 2.0. Close to Trickster (6.15) — Resonance (-2 vs -0.3) is the separator
+The Manipulator	1.0	-0.3	-1.0	-1.0	2.3*	2.7*	*Both exceed scale. Cap Alignment at 2.0, Action at 2.0. Close to Overachiever (5.81)
+Closest Pair Problems (After Correct Scaling)
+These pairs will still blur results even after the scale fix. Listed in order of concern:
+
+1. General vs. Overachiever — dist²=3.68 (Critical) Only separated by: Resonance (-0.3 vs +0.3) and Alignment (-1.0 vs +0.7). That's a total separation of 0.6 and 1.7 on two axes. In a 6D space, a user who mixes two answers slightly off-pattern routes to the wrong one. The steering docs say the key distinction is that the General doesn't care about personal gain while the Overachiever is self-motivated. The Alignment axis is doing the work but it's not strong enough.
+
+Recommended fix: Push General Alignment to -1.5 and Overachiever Alignment to +1.5. Push Resonance on General to -1.0 and Overachiever to +0.5.
+
+2. Creative vs. Inmyfeels — dist²=4.94 (Critical) Nearly identical coordinate profiles. Both are moderately abstract, moderately chaotic, mildly flow-oriented. The only real differences are that Creative has much stronger Sight (+2.0 vs +0.7) and Inmyfeels has stronger Resonance (+1.3 vs 0.0). Users who answer with moderate abstraction and emotional content straddle the boundary constantly.
+
+Recommended fix: Push Inmyfeels Resonance to +2.0 and Alignment to +1.5 (the "it's all about my feelings" self-referential quality). Push Creative Sight to +2.0 and add a concrete Action signal (+0.7 imposing) to represent the compulsion to make things.
+
+3. Trickster vs. Deviant — dist²=6.15 (Moderate) The steering docs make this distinction explicit: Trickster violates expectations, Deviant violates boundaries. Currently both have high Action and high Order (chaotic). The key differentiator should be Resonance (Trickster is neutral, Deviant is strongly detached) and Sight (Trickster is abstract, Deviant is more concrete/impulsive).
+
+4. Manipulator vs. Overachiever — dist²=5.81 (Moderate) Both are Outward, Structured, Imposing, Self-Directed. The Manipulator's signature is hidden operation — it should have lower Projection (closer to 0 or negative) since the Manipulator is invisible by design. The current Projection of +1.0 is too close to the Overachiever's +1.7.
+
+Question Bank Analysis
+The new comedic question set (coffee orders, alarm snoozes, party pets) is tonally excellent. The voice is strong. However there are structural issues with what the questions measure:
+
+What's working:
+
+Q22 (pet death) — excellent for Resonance and Action extremes. High emotional stakes force honest answers
+Q24 (24 hours invisible) — very clean axis isolation, especially for Alignment
+Q3 (pizza theft) — funny, but actually captures Alignment and Resonance well
+Q23 (stranded in storm) — good crisis scenario for Projection and Action
+Q18 (damaging secret) — useful for Alignment and Resonance, captures Manipulator behavior
+Coverage gaps (by axis):
+
+Axis	Problem
+Projection	Well covered overall, but most high-Projection options are also high-Action, fusing these two axes. Users who are Outward but Flow-oriented (Trickster, Fairy under old coord) have no clean path
+Sight (Abstract/Concrete)	Under-covered at the extremes. Only Q24-D [2,2,2,0,1,1] and Q19-D [2,2,-1,1,0,2] push +2 Sight. Abstract thinkers need more questions that reward pattern-finding, metaphorical thinking, or ignoring literal evidence
+Resonance	The most important axis for separating the "feeling" archetypes from the "operating" archetypes, but it's often bundled with Alignment (helping others = empathetic + selfless simultaneously). Need questions where a person can be empathetic but self-serving, or detached but selfless
+Alignment	The axis that most often gets the sign wrong. In Q3, eating someone else's pizza is coded Alignment +3 which is technically correct (self-directed) but the comedic framing makes it feel like the "fun" answer, skewing self-reported Alignment upward across the board. Questions that test Alignment need to make the selfless option genuinely appealing, not virtuous-sounding
+Resonance/Alignment independence	Q9 (helping friend move), Q12 (long meeting), Q16 (I'm fine lie) all pair Empathetic + Selfless simultaneously. This means the test cannot distinguish the Angel (truly selfless + empathetic) from someone who just reads emotional cues well (high Resonance, neutral Alignment)
+Questions I'd revise:
+
+Q3 (pizza): The "eat it, remember nothing" option [-2,-1,2,-3,3,2] has Resonance -3 and Alignment +3. These extreme values have outsized influence on the total score. The scenario is also one where most people will answer based on comedic self-awareness rather than genuine behavior, biasing Alignment upward globally.
+
+Q4 (packing): Option C [3,-1,-2,2,-2,1] has Projection +3 — the maximum. This alone adds a full +0.12 to the normalized Projection score. Combined with Q7-B [3,-2,-1,0,1,3] being the only two +3 Projection options, the General/Trickster archetypes get significant gravitational pull from just two questions. Projection +3 should be rare and reserved for answers that are genuinely maximal.
+
+Q7 (party): B [3,-2,-1,0,1,3] is both Projection +3 and Action +3 simultaneously. This creates a strong coupling between those axes that benefits General, Overachiever, and Trickster simultaneously, making them harder to distinguish.
+
+Specific Recommendations
+1. Fix the coordinate scale (required, do this first)
+Divide all archetype coordinates in engine.js by 6 and round to one decimal place. This is the minimum viable fix that makes the assessment functional.
+
+2. Address the Inmyfeels gravity well
+After scaling, Inmyfeels still has the lowest magnitude (closest to origin). Push it to stronger axis values:
+
+Current (after /6): [-0.7, 0.7, 0.7, 1.3, 1.0, -0.7] Suggested: [0.0, 0.5, 1.0, 2.0, 1.5, -1.0]
+
+Justification: The Inmyfeels archetype makes subjective emotional experience the center of reality. That's a strong +2.0 Resonance signal and a notably self-referential Alignment (+1.5). The key distinction from the Angel is that Inmyfeels emotion is about the person feeling it, not directed at others.
+
+3. Correct the Fairy coordinate
+After dividing by 6, Fairy still shows Projection +0.7. The steering doc says Inward, high. Change to -2.0. This is the same error that was corrected in the last session but appears to have been re-introduced during the manual calibration pass that scaled the coordinates.
+
+4. Separate the two critical close pairs
+General vs. Overachiever — add an Order signal. The General creates order through authority (Structured, very high: -2). The Overachiever creates worth through accomplishment (Structured, very high: also -2). Currently indistinguishable on that axis. Move to:
+
+General: Order -2.0, Action +2.0, Resonance -1.5, Alignment -1.5
+Overachiever: Order -1.5, Action +2.0, Resonance -0.5, Alignment +1.5
+Manipulator vs. Overachiever — Manipulator needs lower Projection. The Manipulator is invisible by design. Change Projection from +1.0 to -0.5. The Manipulator creates conditions from behind the scene; it doesn't command from the front like the General or compete visibly like the Overachiever.
+
+5. Two questions worth reconsidering
+Q3 (pizza): The [-2,-1,2,-3,3,2] option is a measurement outlier. The -3 Resonance and +3 Alignment values are the only |3| values in Resonance, and they appear on what most people will pick as the "funny" option. Consider reducing to [-1,-1,1,-2,2,1].
+
+Q7 (party): Decouple Projection and Action on option B. A party extrovert is not necessarily imposing. Change [3,-2,-1,0,1,3] to [3,-1,0,1,0,1] — high Projection but neutral Action.
+
+Summary Table: What to Change and Why
+Change	Where	Why	Impact
+Divide all coordinates by 6	engine.js	Scale mismatch breaks routing for all archetypes	Critical — fixes assessment
+Fix Fairy Projection to -2.0	engine.js	Override says Inward, coordinate says Outward	High
+Push Inmyfeels Resonance to +2.0, Alignment to +1.5	engine.js	Gravity well problem — too close to origin	High
+Separate General/Overachiever via Alignment	engine.js	Only dist²=3.68 apart, easily confused	High
+Lower Manipulator Projection to -0.5	engine.js	Manipulator is invisible; Proj +1 too close to Overachiever	Medium
+Reduce Q3-A extreme values (-3 Res, +3 Align)	questions.js	Outlier values on a comedic question bias results	Medium
+Decouple Q7-B Projection and Action	questions.js	+3 on both fuses two axes unnecessarily	Medium
+Add questions isolating Resonance from Alignment	questions.js	Critical for Angel vs. Inmyfeels vs. Caretaker	Medium
+This is your calibration roadmap. The scale fix is non-negotiable and requires a single pass through the coordinate array. Everything else is tuning that you can do incrementally while using the diagnostic mode to verify routing.
+
+Est. Credits Used: 5.76
+Elapsed time: 7m 24s

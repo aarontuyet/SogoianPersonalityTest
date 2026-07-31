@@ -499,6 +499,45 @@ button {
   padding: 0 var(--space-lg) var(--space-xl);
 }
 
+/* ── Runner-up line ──────────────────────────────────────────────────── */
+.result__runners-up {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 0 var(--space-lg) var(--space-md);
+  line-height: 1.8;
+}
+
+/* ── Six-axis map link ───────────────────────────────────────────────── */
+.map-link-wrap {
+  text-align: center;
+  padding: var(--space-md) var(--space-lg) var(--space-sm);
+}
+
+.map-link-wrap--result {
+  padding-bottom: var(--space-xl);
+}
+
+.map-link {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.map-link:hover,
+.map-link:focus-visible {
+  color: var(--text-secondary);
+  border-color: var(--border-accent);
+  outline: none;
+}
+
 /* ── 9. TRANSITIONS (screen enter/exit) ──────────────────────────────── */
 .screen--entering {
   animation: fadeIn var(--transition-slow) ease forwards;

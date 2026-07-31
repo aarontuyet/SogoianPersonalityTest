@@ -6,7 +6,7 @@
  *
  * Dependencies (must be loaded before this script):
  *   - src/questions.js  → QUESTIONS[]
- *   - src/engine.js     → ARCHETYPES[], accumulateScore(), findClosestArchetype()
+ *   - src/engine.js     → ARCHETYPES[], accumulateScore(), scoreAssessment()
  *   - html2canvas (CDN, loaded with defer — checked at call time)
  */
 
@@ -45,7 +45,8 @@ const el = {
   resultHeroWrap:      document.querySelector('.result__hero-wrap'),
   resultArchetypeName: document.getElementById('result-archetype-name'),
   resultImage:         document.getElementById('result-image'),
-  resultAnalysis:      document.getElementById('result-analysis')
+  resultAnalysis:      document.getElementById('result-analysis'),
+  resultRunnersUp:     document.getElementById('result-runners-up')
 };
 
 // ── SCREEN TRANSITIONS ────────────────────────────────────────────────────────
@@ -196,16 +197,22 @@ function handleOptionSelect(selectedBtn, vector) {
 
 /**
  * Calculates the result and transitions to the result screen.
+ * scoreAssessment() returns the winner, the complete ranking, and the raw score
+ * from a single calculation. The winner, second place, and third place all come
+ * from the same ranked array returned here.
  */
 function finishQuiz() {
   // Fill progress bar to 100% before transitioning
   el.progressBar.style.width = '100%';
   el.progressLabel.textContent = `QUERY ${QUESTIONS.length} / ${QUESTIONS.length}`;
 
-  const archetype = scoreAssessment(state.selectedVectors);
+  const {
+    result: winner,
+    ranked
+  } = scoreAssessment(state.selectedVectors);
 
   transitionTo(screens.quiz, screens.result, () => {
-    populateResult(archetype);
+    populateResult(winner, ranked);
   });
 }
 
@@ -213,11 +220,21 @@ function finishQuiz() {
 
 /**
  * Populates the result card with the matched archetype's data.
- * @param {object} archetype — An archetype object from ARCHETYPES[].
+ * @param {object} archetype — The winning archetype object from ARCHETYPES[].
+ * @param {Array}  ranked    — Full sorted ranking from findClosestArchetype().
  */
-function populateResult(archetype) {
+function populateResult(archetype, ranked) {
   el.resultArchetypeName.textContent = archetype.name.toUpperCase();
   el.resultAnalysis.textContent = archetype.analysis;
+
+  // 2nd and 3rd place — drawn directly from the already-sorted ranked array
+  if (ranked && ranked.length >= 3) {
+    const second = ranked[1].archetype.name;
+    const third  = ranked[2].archetype.name;
+    el.resultRunnersUp.textContent = `${second} (2nd place) · ${third} (3rd place)`;
+  } else {
+    el.resultRunnersUp.textContent = '';
+  }
 
   // Image with graceful fallback — missing art must never break the result screen
   el.resultImage.style.display = '';
@@ -305,6 +322,7 @@ function restartAssessment() {
   // Reset result card
   el.resultArchetypeName.textContent = '';
   el.resultAnalysis.textContent = '';
+  el.resultRunnersUp.textContent = '';
   el.resultImage.src = '';
   el.resultImage.alt = '';
   el.resultImage.style.display = '';

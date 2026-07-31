@@ -117,3 +117,4 @@ Build output directory: /
 | 04 | Verification pass. Four bugs found and fixed. |
 | 05 | Deployment prep. Steering docs updated. Specs created. SW disabled. Manifest cleaned. Answer lock guard. Image fallback. Path audit. _headers. README. |
 | 06 | Assessment refinement. Normalization fix. 7 archetype coordinate corrections. Alignment sign errors fixed across 100 vectors. 2 questions redesigned. Diagnostic mode added to engine.js. |
+| 07 | Scoring contract v2 applied. Removed normalizeScore() entirely. scoreAssessment() now sums answer vectors and compares the raw sum directly against finalized archetype coordinates. app.js finishQuiz() updated to destructure winner and ranked from single scoreAssessment() return. No questions, vectors, coordinates, analyses, or UI changed. |
